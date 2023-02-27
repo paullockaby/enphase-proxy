@@ -1,0 +1,11 @@
+[flake8]
+inline-quotes = double
+extend-ignore =
+    E501,S311
+per-file-ignores =
+    tests/*:S101,B011,ANN
+exclude =
+    .git
+    .github
+    __pycache__
+    .venv

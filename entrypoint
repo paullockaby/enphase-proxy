@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# use like this:
+#
+#    /entrypoint
+#
+
+# make sure we have a correctly configured environment
+[ -z "$APP_ROOT" ] && exit 1
+cd $APP_ROOT || exit 1
+
+# use arguments entirely from the caller and make no assumptions
+exec $APP_NAME "$@"
