@@ -30,6 +30,8 @@ Still a third way to run this program is with Docker, like this:
 
 ```
 docker build -t enphase_proxy .
+
+# using the login mechanism
 docker run --rm \
     -p 8080:8080 \
     -e ENPHASE_LOCAL_API_URL=$ENPHASE_LOCAL_API_URL \
@@ -37,6 +39,15 @@ docker run --rm \
     -e ENPHASE_REMOTE_API_PASSWORD=$ENPHASE_REMOTE_API_PASSWORD \
     -e ENPHASE_REMOTE_API_SERIALNO=$ENPHASE_REMOTE_API_SERIALNO \
     -e ENPHASE_REMOTE_API_URL=$ENPHASE_REMOTE_API_URL \
+    enphase_proxy --bind=:8080 \
+    --log-config=configurations/logging.conf \
+    --worker-class=uvicorn.workers.UvicornWorker
+
+# or using an existing token
+docker run --rm \
+    -p 8080:8080 \
+    -e ENPHASE_LOCAL_API_URL=$ENPHASE_LOCAL_API_URL \
+    -e ENPHASE_LOCAL_API_JWT=ENPHASE_LOCAL_API_JWT \
     enphase_proxy --bind=:8080 \
     --log-config=configurations/logging.conf \
     --worker-class=uvicorn.workers.UvicornWorker
@@ -58,7 +69,6 @@ The username that you use when you log in to [the Enphase portal](http://enlight
 
 The username that you use when you log in to [the Enphase portal](http://enlighten.enphaseenergy.com).
 
-
 ### `ENPHASE_REMOTE_API_SERIALNO`
 
 The serial number of your Enphase Envoy. You can find this within the Enphase portal on the "Devices" page and will be called "Gateway" or "IQ Gateway".
@@ -69,7 +79,7 @@ The URL to use for programmatically logging in to the Enphase portal. This shoul
 
 ### `ENPHASE_LOCAL_API_JWT`
 
-If you set all of the environment variables defined above the `enphase-proxy` will, at startup and then periodically thereafter, hit the Enphase Enlighten system and get a new JWT. If you're testing then you might worry that you may be blocked. If you manage to get a valid JWT then set it here and the `enphase-proxy` tool will never hit the cloud. Since the JWTs (currently) are set with six _month_ lifetimes, this is pretty safe to do.
+If you set all of the environment variables defined above the `enphase-proxy` will, at startup and then periodically thereafter, hit the Enphase Enlighten system and get a new JWT. If you're testing then you might worry that you may be blocked. If you have to get a valid JWT on hand then set it here and the `enphase-proxy` tool will never hit the cloud. Since the JWTs (currently) are set with six _month_ lifetimes, this is pretty safe to do for a time period. If this environment variable is set then all of the `ENPHASE_REMOTE_` environment variables are ignored.
 
 ## Manually Getting the JWT
 
