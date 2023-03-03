@@ -37,7 +37,7 @@ def load() -> Quart:
         if app.config["LOCAL_API_SESSION"]:
             await app.config["LOCAL_API_SESSION"].close()
 
-    @app.route("/health")
+    @app.route("/_/health")
     async def health() -> Response:
         return await make_response(
             jsonify(
@@ -50,27 +50,22 @@ def load() -> Quart:
             200,
         )
 
-    @app.route("/production")
-    async def production() -> Response:
+    @app.route("/", defaults={"path": ""})
+    @app.route("/<path:path>")
+    async def proxy(path: str) -> Response:
         api_key = credentials_updater.credentials
         async with app.config["LOCAL_API_SESSION"].get(
-            "/production.json",
+            f"/{path}",
             ssl=False,
             headers={"Authorization": f"Bearer {api_key}"},
-        ) as r:
-            data = await r.json()
-            return await make_response(jsonify(data), 200)
+        ) as result:
+            content = await result.text()
+            status_code = result.status
+            content_type = result.headers.get("content-type")
 
-    @app.route("/inverters")
-    async def inverters() -> Response:
-        api_key = credentials_updater.credentials
-        async with app.config["LOCAL_API_SESSION"].get(
-            "/api/v1/production/inverters",
-            ssl=False,
-            headers={"Authorization": f"Bearer {api_key}"},
-        ) as r:
-            data = await r.json()
-            return await make_response(jsonify(data), 200)
+            response = await make_response(content, status_code)
+            response.headers["Content-Type"] = content_type
+            return response
 
     # tell ourselves what we've mapped
     if app.logger.isEnabledFor(logging.DEBUG):
