@@ -10,4 +10,4 @@
 cd $APP_ROOT || exit 1
 
 # use arguments entirely from the caller and make no assumptions
-exec $APP_NAME "$@"
+exec tini -- $VIRTUALENV/bin/gunicorn $APP_NAME.asgi:app --chdir=src "$@"

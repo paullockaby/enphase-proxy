@@ -2,11 +2,11 @@ import argparse
 import logging
 import sys
 
-from enphase import __version__
-from enphase.proxy.app import load
+from enphase_proxy import __version__
+from enphase_proxy.app import load
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(prog="enphase-proxy")
+    parser = argparse.ArgumentParser(prog="enphase_proxy")
     parser.add_argument(
         "--version",
         action="version",

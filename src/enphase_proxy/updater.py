@@ -41,7 +41,7 @@ class CredentialsUpdater:
             password=app.config["REMOTE_API_PASSWORD"],
             serialno=app.config["REMOTE_API_SERIALNO"],
             # if this is present then we will not fetch anything
-            jwt=app.config["LOCAL_API_JWT"],
+            jwt=app.config.get("LOCAL_API_JWT"),
         )
 
         @app.before_serving

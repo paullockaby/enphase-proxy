@@ -9,13 +9,13 @@ This library uses [Python Poetry](https://python-poetry.org/) for builds, tests,
 poetry install
 ```
 
-You can test the application by running this command:
+Assuming that you have set up your environment as described later in this document, you can test the application by running this command:
 
 ```
-poetry run python3 -m enphase.proxy
+poetry run python3 -m enphase_proxy
 ```
 
-An alternative way to run this is with `gunicorn`, like this:
+Still assuming that your environment is configured, an alternative way to run this is with `gunicorn`, like this:
 
 ```
 poetry run gunicorn \
@@ -23,7 +23,23 @@ poetry run gunicorn \
     --worker-class=uvicorn.workers.UvicornWorker \
     --bind=127.0.0.1:8080 \
     --log-config=configurations/logging.conf \
-    enphase.proxy.asgi:app
+    enphase_proxy.asgi:app
+```
+
+Still a third way to run this program is with Docker, like this:
+
+```
+docker build -t enphase_proxy .
+docker run --rm \
+    -p 8080:8080 \
+    -e ENPHASE_LOCAL_API_URL=$ENPHASE_LOCAL_API_URL \
+    -e ENPHASE_REMOTE_API_USERNAME=$ENPHASE_REMOTE_API_USERNAME \
+    -e ENPHASE_REMOTE_API_PASSWORD=$ENPHASE_REMOTE_API_PASSWORD \
+    -e ENPHASE_REMOTE_API_SERIALNO=$ENPHASE_REMOTE_API_SERIALNO \
+    -e ENPHASE_REMOTE_API_URL=$ENPHASE_REMOTE_API_URL \
+    enphase_proxy --bind=:8080 \
+    --log-config=configurations/logging.conf \
+    --worker-class=uvicorn.workers.UvicornWorker
 ```
 
 ## Configuration

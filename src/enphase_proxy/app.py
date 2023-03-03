@@ -3,7 +3,7 @@ import logging
 import aiohttp
 from quart import Quart, Response, jsonify, make_response
 
-from enphase import __version__
+from enphase_proxy import __version__
 
 from .tools import load_configuration
 from .updater import CredentialsUpdater
@@ -44,6 +44,7 @@ def load() -> Quart:
                 {
                     "status": "pass",
                     "message": "flux capacitor is fluxing",
+                    "version": __version__,
                 },
             ),
             200,

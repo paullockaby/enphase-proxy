@@ -6,10 +6,11 @@ LABEL org.opencontainers.image.source=https://github.com/paullockaby/enphase-pro
 # install updates and dependencies
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get -q update && apt-get -y upgrade && \
+    apt-get install --no-install-recommends -y tini && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # used all over the place
-ENV APP_NAME=enphase-proxy
+ENV APP_NAME=enphase_proxy
 ENV APP_ROOT=/opt/$APP_NAME
 
 # create the user (do not use yet)
