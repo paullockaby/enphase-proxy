@@ -57,7 +57,7 @@ docker run --rm \
 
 Before you run the application you need to either (1) modify or create a configuration file in the `src/configurations` directory using the example or (2) add these environment variables to your development environment using something like direnv:
 
-### `QUART_ENV`
+### `ENVIRONMENT`
 
 The name of the "environment" to use. Roughly this defines which configuration file to use in the `src/configurations` directory. That is, if you set this to `development` then the proxy will load `development.conf`.
 

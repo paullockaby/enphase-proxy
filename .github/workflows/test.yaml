@@ -24,6 +24,8 @@ jobs:
       - name: setup poetry and pre-commit
         run: |
           # TODO unpin poetry when either of these are fixed:
+          #   - https://github.com/python-poetry/poetry/issues/7572
+          #   - https://github.com/pgjones/hypercorn/issues/102
           pip install poetry==1.3.2
 
       - name: setup application

@@ -15,7 +15,7 @@ def load_configuration(
     environment: str = None,
 ) -> str:
     if environment is None:
-        environment = os.environ.get("QUART_ENV") or "development"
+        environment = os.environ.get("ENVIRONMENT") or "development"
 
     if package is None:
         if path is None:
