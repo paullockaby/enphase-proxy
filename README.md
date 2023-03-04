@@ -55,7 +55,11 @@ docker run --rm \
 
 ## Configuration
 
-Before you run the application you need to either (1) modify a configuration file called `src/configurations/development.conf` directory using the example or (2) add these environment variables to your development environment using something like direnv:
+Before you run the application you need to either (1) modify or create a configuration file in the `src/configurations` directory using the example or (2) add these environment variables to your development environment using something like direnv:
+
+### `QUART_ENV`
+
+The name of the "environment" to use. Roughly this defines which configuration file to use in the `src/configurations` directory. That is, if you set this to `development` then the proxy will load `development.conf`.
 
 ### `ENPHASE_LOCAL_API_URL`
 
