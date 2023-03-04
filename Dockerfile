@@ -22,7 +22,10 @@ FROM base AS builder
 RUN apt-get -q update && apt-get install -y --no-install-recommends git
 
 # now become the app user to set up poetry and the versioning tool
-RUN pip3 install poetry dunamai --no-cache-dir && mkdir -p $APP_ROOT && chown 1000:100 $APP_ROOT
+# TODO unpin poetry when either of these are fixed:
+#   - https://github.com/python-poetry/poetry/issues/7572
+#   - https://github.com/pgjones/hypercorn/issues/102
+RUN pip3 install poetry==1.3.2 dunamai --no-cache-dir && mkdir -p $APP_ROOT && chown 1000:100 $APP_ROOT
 COPY --chown=1000:1000 . $APP_ROOT
 
 # update the version number of our application

@@ -23,7 +23,8 @@ jobs:
 
       - name: setup poetry and pre-commit
         run: |
-          pip install poetry
+          # TODO unpin poetry when either of these are fixed:
+          pip install poetry==1.3.2
 
       - name: setup application
         run: |
