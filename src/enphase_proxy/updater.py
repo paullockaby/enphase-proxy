@@ -18,7 +18,7 @@ class CredentialsUpdater:
         # actually fetching credentials this often. this is just how often we
         # will check to see if we do need to fetch credentials. credentials
         # are only fetched when they're about to expire.
-        self.updater_refresh = 60
+        self.updater_refresh = 300
 
         # if this is set to true then we are trying to exit. use an Event
         # instead of a flag so that we can wait on it and exit more quickly.
