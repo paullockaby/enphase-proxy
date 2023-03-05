@@ -107,7 +107,9 @@ class CredentialsUpdater:
         timer = time_now()
         await task()
         logger.info(
-            "finished refreshing credentials in {} seconds".format(time_now() - timer),
+            "finished refreshing credentials in {:.4f} seconds".format(
+                time_now() - timer,
+            ),
         )
 
     @property
