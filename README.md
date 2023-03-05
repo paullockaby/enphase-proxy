@@ -92,24 +92,31 @@ Above it is mentioned that you can hardcode a JWT to avoid hitting the Enphase E
 First, get this information:
 
 ```
-export ENPHASE_USERNAME=your-enphase.com-username@whatever.com
-export ENPHASE_PASSWORD=your-enphase.com-password
-export ENPHASE_SERIALNO=your-enphase-envoy-serial-number
+export ENPHASE_REMOTE_API_USERNAME=your-enphase.com-username@whatever.com
+export ENPHASE_REMOTE_API_PASSWORD=your-enphase.com-password
+export ENPHASE_REMOTE_API_SERIALNO=your-enphase-envoy-serial-number
 ```
 
 Second, run this command to get a valid session id:
 
 ```
 curl https://enlighten.enphaseenergy.com/login/login.json \
-   -d "user[email]=${ENPHASE_USERNAME}&user[password]=${ENPHASE_PASSWORD}" \
+   -d "user[email]=${ENPHASE_REMOTE_API_USERNAME}&user[password]=${ENPHASE_REMOTE_API_PASSWORD}" \
    | jq -r '.session_id'
 ```
 
 Third, put the session id that you got from the previous command into this command and run this to get the JWT:
 
 ```
-curl "https://enlighten.enphaseenergy.com/entrez-auth-token?serial_num=${ENPHASE_SERIALNO}" \
-  -H "cookie: _enlighten_4_session=XXXXXyour-session-idXXXXXX"
+curl "https://enlighten.enphaseenergy.com/entrez-auth-token?serial_num=${ENPHASE_REMOTE_API_SERIALNO}" \
+  -H "cookie: _enlighten_4_session=XXXXXyour-session-idXXXXXX" \
+  | jq -r '.token'
+```
+
+Once you have the JWT in hand you can run queries like this:
+
+```
+curl -k -H "Authorization: Bearer XXXyour-jwt-tokenXXX" https://envoy.local/production.json
 ```
 
 Of course, the Enphase folks have not published any of this. All of this information was gleaned off of various forums -- mostly HomeAssistant forums. It may change and break at any time.
