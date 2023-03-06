@@ -27,7 +27,6 @@ def load() -> Quart:
     @app.before_serving
     async def startup() -> None:
         app.config["LOCAL_API_SESSION"] = aiohttp.ClientSession(
-            raise_for_status=True,
             base_url=app.config["LOCAL_API_URL"],
             skip_auto_headers={"User-Agent"},
         )
@@ -53,11 +52,10 @@ def load() -> Quart:
     @app.route("/", defaults={"path": ""})
     @app.route("/<path:path>")
     async def proxy(path: str) -> Response:
-        api_key = credentials_updater.credentials
         async with app.config["LOCAL_API_SESSION"].get(
             f"/{path}",
             ssl=False,
-            headers={"Authorization": f"Bearer {api_key}"},
+            headers={"Authorization": f"Bearer {credentials_updater.credentials}"},
         ) as result:
             content = await result.text()
             status_code = result.status
