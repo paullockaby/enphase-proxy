@@ -15,14 +15,15 @@ Assuming that you have set up your environment as described later in this docume
 poetry run python3 -m enphase_proxy
 ```
 
-Still assuming that your environment is configured, an alternative way to run this is with `gunicorn`, like this:
+Still assuming that your environment is configured, an alternative way to run this is with `hypercorn`, like this:
 
 ```
-poetry run gunicorn \
-    --chdir=src \
-    --worker-class=uvicorn.workers.UvicornWorker \
+cd src/
+poetry run hypercorn \
     --bind=127.0.0.1:8080 \
-    --log-config=configurations/logging.conf \
+    --access-logfile=- \
+    --error-logfile=- \
+    --worker-class=uvloop \
     enphase_proxy.asgi:app
 ```
 
@@ -39,18 +40,22 @@ docker run --rm \
     -e ENPHASE_REMOTE_API_PASSWORD=$ENPHASE_REMOTE_API_PASSWORD \
     -e ENPHASE_REMOTE_API_SERIALNO=$ENPHASE_REMOTE_API_SERIALNO \
     -e ENPHASE_REMOTE_API_URL=$ENPHASE_REMOTE_API_URL \
-    enphase_proxy --bind=:8080 \
-    --log-config=configurations/logging.conf \
-    --worker-class=uvicorn.workers.UvicornWorker
+    enphase_proxy \
+    --bind=:8080 \
+    --access-logfile=- \
+    --error-logfile=- \
+    --worker-class=uvloop
 
 # or using an existing token
 docker run --rm \
     -p 8080:8080 \
     -e ENPHASE_LOCAL_API_URL=$ENPHASE_LOCAL_API_URL \
-    -e ENPHASE_LOCAL_API_JWT=ENPHASE_LOCAL_API_JWT \
-    enphase_proxy --bind=:8080 \
-    --log-config=configurations/logging.conf \
-    --worker-class=uvicorn.workers.UvicornWorker
+    -e ENPHASE_LOCAL_API_JWT=$ENPHASE_LOCAL_API_JWT \
+    enphase_proxy \
+    --bind=:8080 \
+    --access-logfile=- \
+    --error-logfile=- \
+    --worker-class=uvloop
 ```
 
 ## Configuration
@@ -83,7 +88,7 @@ The URL to use for programmatically logging in to the Enphase portal. This shoul
 
 ### `ENPHASE_LOCAL_API_JWT`
 
-If you set all of the environment variables defined above the `enphase-proxy` will, at startup and then periodically thereafter, hit the Enphase Enlighten system and get a new JWT. If you're testing then you might worry that you may be blocked. If you have to get a valid JWT on hand then set it here and the `enphase-proxy` tool will never hit the cloud. Since the JWTs (currently) are set with six _month_ lifetimes, this is pretty safe to do for a time period. If this environment variable is set then all of the `ENPHASE_REMOTE_` environment variables are ignored.
+If you set all the environment variables defined above the `enphase-proxy` will, at startup and then periodically thereafter, hit the Enphase Enlighten system and get a new JWT. If you're testing then you might worry that you may be blocked. If you have to get a valid JWT on hand then set it here and the `enphase-proxy` tool will never hit the cloud. Since the JWTs (currently) are set with six _month_ lifetimes, this is pretty safe to do for a time period. If this environment variable is set then all of the `ENPHASE_REMOTE_` environment variables are ignored.
 
 ## Manually Getting the JWT
 

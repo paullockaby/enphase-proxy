@@ -35,11 +35,12 @@ class CredentialsUpdater:
             self.app = None
 
     def init_app(self: "CredentialsUpdater", app: Quart = None) -> None:
+        self.app = app
         self.data_manager = CredentialsManager(
-            url=app.config["REMOTE_API_URL"],
-            username=app.config["REMOTE_API_USERNAME"],
-            password=app.config["REMOTE_API_PASSWORD"],
-            serialno=app.config["REMOTE_API_SERIALNO"],
+            url=app.config.get("REMOTE_API_URL"),
+            username=app.config.get("REMOTE_API_USERNAME"),
+            password=app.config.get("REMOTE_API_PASSWORD"),
+            serialno=app.config.get("REMOTE_API_SERIALNO"),
             # if this is present then we will not fetch anything
             jwt=app.config.get("LOCAL_API_JWT"),
         )
@@ -50,10 +51,10 @@ class CredentialsUpdater:
             # we are going to start a background task that will continue to
             # fetch the credentials on a regular basis. we can't start until
             # we have credentials so just crash if we can't fetch them.
-            logger.info("fetching initial credentials")
+            self.app.logger.info("fetching initial credentials")
             self.data_cache = await self.data_manager.credentials
 
-            logger.info("registering credentials updater background task")
+            self.app.logger.info("registering credentials updater background task")
             app.add_background_task(self._background_looper)
 
         @app.after_serving
@@ -61,7 +62,9 @@ class CredentialsUpdater:
             # just set the Event flag and the background task will exit. if the
             # background task does not exit within 60 seconds then Quart will
             # send an async cancel event to the task.
-            logger.info("signaling credentials updater background task to stop")
+            self.app.logger.info(
+                "signaling credentials updater background task to stop",
+            )
             self.updater_canceled.set()
 
     async def _background_waiter(
@@ -85,28 +88,28 @@ class CredentialsUpdater:
                 with contextlib.suppress(Exception):
                     await self._background_task()
 
-        logger.info("credentials updater background task shutting down")
+        self.app.logger.info("credentials updater background task shutting down")
 
     async def _background_task(self: "CredentialsUpdater") -> None:
         # Randomly wait up to 2^x * 10 seconds between each retry, at least 60
         # seconds until the range reaches 600 seconds, then randomly up to 600
-        # seconds afterwards. If we were told to cancel then stop retrying.
+        # seconds afterward. If we were told to cancel then stop retrying.
         @tenacity.retry(
             wait=tenacity.wait_random_exponential(multiplier=10, min=60, max=600),
             stop=tenacity.stop_when_event_set(self.updater_canceled),
-            before_sleep=tenacity.before_sleep_log(logger, logging.ERROR),
+            before_sleep=tenacity.before_sleep_log(self.app.logger, logging.ERROR),
             reraise=True,
         )
         async def task() -> None:
             try:
                 self.data_cache = await self.data_manager.credentials
             except Exception as e:
-                logger.exception(f"unable to fetch credentials: {e}")
+                self.app.logger.exception(f"unable to fetch credentials: {e}")
                 raise
 
         timer = time_now()
         await task()
-        logger.info(
+        self.app.logger.info(
             "finished refreshing credentials in {:.4f} seconds".format(
                 time_now() - timer,
             ),
@@ -120,10 +123,10 @@ class CredentialsUpdater:
 class CredentialsManager:
     def __init__(
         self: "CredentialsManager",
-        url: str,
-        username: str,
-        password: str,
-        serialno: str,
+        url: Optional[str] = None,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
+        serialno: Optional[str] = None,
         jwt: Optional[str] = None,
     ) -> None:
         self.enphase_url = url
