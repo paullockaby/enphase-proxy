@@ -10,9 +10,9 @@ packages = [{include = "enphase_proxy", from = "src"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 quart = "^0.18.4"
-aiohttp = "^3.8.4"
+aiohttp = "^3.8.5"
 tenacity = "^8.2.2"
-hypercorn = {extras = ["uvloop"], version = "^0.14.3"}
+hypercorn = {extras = ["uvloop"], version = "^0.14.4"}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
