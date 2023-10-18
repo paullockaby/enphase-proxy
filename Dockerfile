@@ -1,4 +1,4 @@
-FROM python:3.11.6-slim-bookworm@sha256:8fcf215ec209b0cba4048197d3a78544faa69561b03a35528899fd9b93fe2990 AS base
+FROM python:3.11.6-slim-bookworm@sha256:fda05d00fc47a4133a1b65bdd89007facf4ec0fa5fb737a35652699b18029830 AS base
 
 # github metadata
 LABEL org.opencontainers.image.source=https://github.com/paullockaby/enphase-proxy
