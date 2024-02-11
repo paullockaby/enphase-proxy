@@ -1,4 +1,4 @@
-FROM python:3.11.6-slim-bookworm@sha256:fda05d00fc47a4133a1b65bdd89007facf4ec0fa5fb737a35652699b18029830 AS base
+FROM python:3.12.2-slim-bookworm@sha256:eb53cb99a609b86da6e239b16e1f2aed5e10cfbc538671fc4631093a00f133f2 AS base
 
 # github metadata
 LABEL org.opencontainers.image.source=https://github.com/paullockaby/enphase-proxy
@@ -23,25 +23,29 @@ RUN apt-get -q update && apt-get install -y --no-install-recommends git
 
 # now become the app user to set up poetry and the versioning tool
 RUN pip3 install poetry dunamai --no-cache-dir && mkdir -p $APP_ROOT && chown 1000:100 $APP_ROOT
-COPY --chown=1000:1000 . $APP_ROOT
+COPY --chown=1000:1000 pyproject.toml poetry.lock entrypoint $APP_ROOT
+RUN chmod +x $APP_ROOT/entrypoint
 
-# update the version number of our application
+# we have enough to install the application now
 USER app
 WORKDIR $APP_ROOT
-RUN poetry version $(dunamai from git --dirty)
-
-# now install our application
 RUN poetry config virtualenvs.in-project true && \
     poetry config virtualenvs.create true && \
-    poetry install --without=dev --no-interaction
+    poetry install --without=dev --no-interaction --no-directory --no-root
+
+# now copy over the application
+COPY --chown=1000:1000 src/$APP_NAME $APP_ROOT/$APP_NAME
+
+# update the version number of our application
+COPY --chown=1000:1000 .git/ $APP_ROOT/.git
+RUN poetry version $(dunamai from git --dirty)
 
 FROM base AS final
 
 # copy over our actual application
 COPY --from=builder --chown=0:0 $APP_ROOT/entrypoint /entrypoint
 COPY --from=builder --chown=0:0 $APP_ROOT/.venv $APP_ROOT/.venv
-COPY --from=builder --chown=0:0 $APP_ROOT/src $APP_ROOT/src
-RUN chmod +x /entrypoint
+COPY --from=builder --chown=0:0 $APP_ROOT/$APP_NAME $APP_ROOT/$APP_NAME
 
 # set up the virtual environment
 ENV VIRTUALENV=$APP_ROOT/.venv
