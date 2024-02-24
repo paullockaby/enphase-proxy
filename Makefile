@@ -27,8 +27,8 @@ test: install
 	poetry run pre-commit run --all-files
 	poetry run pytest --cov=src --cov-report=term --cov-report=html
 
-.PHONY: pre-commit
-pre-commit: install
+.PHONY: lint
+lint: install
 	poetry run pre-commit run --all-files
 
 .PHONY: build
