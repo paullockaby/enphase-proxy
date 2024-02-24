@@ -13,12 +13,7 @@ def load() -> Quart:
     app = Quart(__name__, static_folder=None)
     environment = load_configuration(app, package="configurations")
     app.config.from_prefixed_env("ENPHASE")
-    app.logger.info(
-        "starting web application in '{}' mode with version {}".format(
-            environment,
-            __version__,
-        ),
-    )
+    app.logger.info("starting web application in '%s' mode with version %s", environment, __version__)
 
     # initialize the system that fetches the enphase jwt
     credentials_updater = CredentialsUpdater(app)
@@ -39,23 +34,19 @@ def load() -> Quart:
     @app.route("/_/health")
     async def health() -> Response:
         return await make_response(
-            jsonify(
-                {
-                    "status": "pass",
-                    "message": "flux capacitor is fluxing",
-                    "version": __version__,
-                },
-            ),
-            200,
-        )
+            jsonify({
+                "status": "pass",
+                "message": "flux capacitor is fluxing",
+                "version": __version__,
+            }), 200)
 
     @app.route("/", defaults={"path": ""})
     @app.route("/<path:path>")
     async def proxy(path: str) -> Response:
         async with app.config["LOCAL_API_SESSION"].get(
-            f"/{path}",
-            ssl=False,
-            headers={"Authorization": f"Bearer {credentials_updater.credentials}"},
+                f"/{path}",
+                ssl=False,
+                headers={"Authorization": f"Bearer {credentials_updater.credentials}"},
         ) as result:
             content = await result.text()
             status_code = result.status

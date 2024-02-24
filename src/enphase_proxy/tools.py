@@ -23,27 +23,24 @@ def load_configuration(
 
         if path is None:
             # load from a package called "{calling_package}.configurations"
-            calling_package = inspect.currentframe().f_back.f_globals["__package__"]
+            current_frame = inspect.currentframe()
+            calling_package = current_frame.f_back.f_globals["__package__"]
             if calling_package:
                 package = ".".join([calling_package, "configurations"])
             else:
                 package = "configurations"
 
-            with importlib.resources.as_file(
-                importlib.resources.files(package) / "{}.conf".format(environment),
-            ) as path:
-                logger.info("loading configuration from '{}'".format(path))
+            with importlib.resources.as_file(importlib.resources.files(package) / f"{environment}.conf") as path:
+                logger.info("loading configuration from '%s'", path)
                 app.config.from_pyfile(path)
         else:
             path = os.path.join(path, "{}.conf".format(environment))
-            logger.info("loading configuration from '{}'".format(path))
+            logger.info("loading configuration from '%s'", path)
             app.config.from_pyfile(path)
 
     else:
-        with importlib.resources.as_file(
-            importlib.resources.files(package) / "{}.conf".format(environment),
-        ) as path:
-            logger.info("loading configuration from '{}'".format(path))
+        with importlib.resources.as_file(importlib.resources.files(package) / f"{environment}.conf") as path:
+            logger.info("loading configuration from '%s'", path)
             app.config.from_pyfile(path)
 
     return environment

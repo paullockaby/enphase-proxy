@@ -18,7 +18,6 @@ poetry run python3 -m enphase_proxy
 Still assuming that your environment is configured, an alternative way to run this is with `hypercorn`, like this:
 
 ```
-cd src/
 poetry run hypercorn \
     --bind=127.0.0.1:8080 \
     --access-logfile=- \

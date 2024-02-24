@@ -2,40 +2,62 @@ exclude: '^$'
 fail_fast: false
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
-      - id: check-ast
+      - id: check-added-large-files
+      - id: check-json
+      - id: check-yaml
+      - id: check-shebang-scripts-are-executable
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: check-merge-conflict
       - id: check-case-conflict
+      - id: mixed-line-ending
+        exclude: "(^.idea/|.vscode/)"
       - id: trailing-whitespace
-        exclude: "(^.idea/|^docs/)"
+        exclude: "(^.idea/|.vscode/)"
       - id: end-of-file-fixer
-        exclude: "(^.idea/|^docs/)"
+        exclude: "(^.idea/|.vscode/)"
+
+      # this checks whether the python code is valid
+      - id: check-ast
+
+  - repo: https://github.com/google/yapf
+    rev: v0.40.2
+    hooks:
+      - id: yapf
+        exclude: ^.*\b(migrations)\b.*$
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
+    rev: 5.13.2
     hooks:
       - id: isort
 
-  - repo: https://github.com/psf/black
-    rev: 23.1.0
-    hooks:
-      - id: black
-
   - repo: https://github.com/pycqa/flake8
-    rev: 5.0.4
+    rev: 7.0.0
     hooks:
       - id: flake8
         additional_dependencies:
-          - flake8-annotations
+          # automated security testing
           - flake8-bandit
-          - flake8-black
+
+          # do not allow breaking lines with backslashes
           - flake8-broken-line
+
+          # check for built-ins being used as variables or parameters
           - flake8-builtins
+
+          # "find likely bugs and design problems in your program"
           - flake8-bugbear
-          - flake8-commas
+
+          # write better comprehensions
           - flake8-comprehensions
-          - flake8-isort
+
+          # catch bugs from implicit concat
           - flake8-no-implicit-concat
-          - flake8-quotes
+
+          # attempt to simplify code
           - flake8-simplify
+
+          # validate names of things
           - pep8-naming

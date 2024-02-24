@@ -8,7 +8,7 @@ packages = [{include = "enphase_proxy", from = "src"}]
 [tool.poetry.scripts]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 quart = "^0.19.3"
 aiohttp = "^3.8.6"
 tenacity = "^8.2.3"

@@ -21,6 +21,22 @@ if __name__ == "__main__":
         default=False,
         help="send verbose output to the console",
     )
+    parser.add_argument(
+        "-p",
+        "--port",
+        dest="port",
+        default=8080,
+        type=int,
+        help="port number to listen on",
+    )
+    parser.add_argument(
+        "-b",
+        "--bind",
+        dest="address",
+        default="127.0.0.1",
+        type=str,
+        help="interface to listen on",
+    )
     args = parser.parse_args()
 
     # send application logs to stdout
@@ -31,4 +47,9 @@ if __name__ == "__main__":
     )
 
     # run only on localhost for testing
-    load().run(host="127.0.0.1", port=8080, debug=args.verbose, use_reloader=False)
+    load().run(
+        host=args.bind,
+        port=args.port,
+        debug=args.verbose,
+        use_reloader=False,
+    )

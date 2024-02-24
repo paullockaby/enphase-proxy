@@ -2,7 +2,6 @@ import asyncio
 import contextlib
 import logging
 from datetime import datetime
-from time import perf_counter as time_now
 from typing import Optional
 
 import aiohttp
@@ -13,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class CredentialsUpdater:
+
     def __init__(self: "CredentialsUpdater", app: Quart = None) -> None:
         # this is how often we will refresh our credentials. we are not
         # actually fetching credentials this often. this is just how often we
@@ -51,10 +51,10 @@ class CredentialsUpdater:
             # we are going to start a background task that will continue to
             # fetch the credentials on a regular basis. we can't start until
             # we have credentials so just crash if we can't fetch them.
-            self.app.logger.info("fetching initial credentials")
+            logger.info("fetching initial credentials")
             self.data_cache = await self.data_manager.credentials
 
-            self.app.logger.info("registering credentials updater background task")
+            logger.info("registering credentials updater background task")
             app.add_background_task(self._background_looper)
 
         @app.after_serving
@@ -62,9 +62,7 @@ class CredentialsUpdater:
             # just set the Event flag and the background task will exit. if the
             # background task does not exit within 60 seconds then Quart will
             # send an async cancel event to the task.
-            self.app.logger.info(
-                "signaling credentials updater background task to stop",
-            )
+            logger.info("signaling credentials updater background task to stop")
             self.updater_canceled.set()
 
     async def _background_waiter(
@@ -79,16 +77,13 @@ class CredentialsUpdater:
 
     async def _background_looper(self: "CredentialsUpdater") -> None:
         with contextlib.suppress(asyncio.CancelledError):
-            while not await self._background_waiter(
-                self.updater_canceled,
-                self.updater_refresh,
-            ):
+            while not await self._background_waiter(self.updater_canceled, self.updater_refresh):
                 # we need the background task to keep looping and try again
                 # so ignore any error that comes out of it and start again
                 with contextlib.suppress(Exception):
                     await self._background_task()
 
-        self.app.logger.info("credentials updater background task shutting down")
+        logger.info("credentials updater background task shutting down")
 
     async def _background_task(self: "CredentialsUpdater") -> None:
         # Randomly wait up to 2^x * 10 seconds between each retry, at least 60
@@ -97,23 +92,18 @@ class CredentialsUpdater:
         @tenacity.retry(
             wait=tenacity.wait_random_exponential(multiplier=10, min=60, max=600),
             stop=tenacity.stop_when_event_set(self.updater_canceled),
-            before_sleep=tenacity.before_sleep_log(self.app.logger, logging.ERROR),
+            before_sleep=tenacity.before_sleep_log(logger, logging.ERROR),
             reraise=True,
         )
         async def task() -> None:
             try:
                 self.data_cache = await self.data_manager.credentials
             except Exception as e:
-                self.app.logger.exception(f"unable to fetch credentials: {e}")
+                logger.exception("unable to fetch credentials: %s", str(e))
                 raise
 
-        timer = time_now()
         await task()
-        self.app.logger.info(
-            "finished refreshing credentials in {:.4f} seconds".format(
-                time_now() - timer,
-            ),
-        )
+        logger.info("finished refreshing credentials")
 
     @property
     def credentials(self: "CredentialsUpdater") -> str:
@@ -121,6 +111,7 @@ class CredentialsUpdater:
 
 
 class CredentialsManager:
+
     def __init__(
         self: "CredentialsManager",
         url: Optional[str] = None,
@@ -158,7 +149,8 @@ class CredentialsManager:
         now = datetime.now()
         if (now - self.data["fetched"]) > (self.data["expiry"] - now):
             logger.info(
-                f"credentials will expire at {self.data['expiry']} -- fetching new credentials",
+                "credentials will expire at %s -- fetching new credentials",
+                self.data["expiry"],
             )
             self.data = await self._fetch_credentials()
 
@@ -166,9 +158,9 @@ class CredentialsManager:
 
     async def _fetch_credentials(self: "CredentialsManager") -> dict:
         async with aiohttp.ClientSession(
-            raise_for_status=True,
-            base_url=self.enphase_url,
-            skip_auto_headers={"User-Agent"},
+                raise_for_status=True,
+                base_url=self.enphase_url,
+                skip_auto_headers={"User-Agent"},
         ) as session:
             # get the session id
             url = "/login/login.json"
