@@ -1,4 +1,4 @@
-FROM python:3.12.3-slim-bookworm@sha256:541d45d3d675fb8197f534525a671e2f8d66c882b89491f9dda271f4f94dcd06 AS base
+FROM python:3.12.3-slim-bookworm@sha256:2be8daddbb82756f7d1f2c7ece706aadcb284bf6ab6d769ea695cc3ed6016743 AS base
 
 # github metadata
 LABEL org.opencontainers.image.source=https://github.com/paullockaby/enphase-proxy
@@ -22,7 +22,7 @@ FROM base AS builder
 RUN apt-get -q update && apt-get install -y --no-install-recommends git
 
 # now become the app user to set up poetry and the versioning tool
-RUN pip3 install poetry dunamai --no-cache-dir && mkdir -p $APP_ROOT && chown 1000:100 $APP_ROOT
+RUN pip3 install poetry dunamai --no-cache-dir && mkdir -p $APP_ROOT && chown 1000:1000 $APP_ROOT
 COPY --chown=1000:1000 pyproject.toml poetry.lock entrypoint $APP_ROOT
 RUN chmod +x $APP_ROOT/entrypoint
 
