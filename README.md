@@ -57,6 +57,14 @@ docker run --rm \
     --worker-class=uvloop
 ```
 
+## Testing the API
+
+Once you've got it running you can test it with Curl, like this:
+
+```
+curl -X POST http://localhost:8080/production.json | jq
+```
+
 ## Configuration
 
 Before you run the application you need to either (1) modify or create a configuration file in the `src/configurations` directory using the example or (2) add these environment variables to your development environment using something like direnv:
