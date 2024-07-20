@@ -1,0 +1,24 @@
+# general exceptions
+**/.*.swp
+**/*~
+**/.DS_Store
+**/.DS_Store?
+**/.Trashes
+**/Thumbs.db
+
+# byte-compiled / optimized / DLL files
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+
+# unit test / coverage reports
+.pytest_cache/
+
+# pyenv
+.python-version
+
+# Environments
+**/.envrc
+**/.venv
+**/venv/
+**/venv.bak/
