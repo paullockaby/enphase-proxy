@@ -5,42 +5,65 @@ repos:
     rev: v4.6.0
     hooks:
       - id: check-added-large-files
+        stages: [pre-commit]
       - id: check-ast
+        stages: [pre-commit]
       - id: check-docstring-first
+        stages: [pre-commit]
       - id: check-json
+        stages: [pre-commit]
       - id: check-toml
+        stages: [pre-commit]
       - id: check-yaml
         args: [--allow-multiple-documents]
+        stages: [pre-commit]
       - id: check-xml
+        stages: [pre-commit]
       - id: check-shebang-scripts-are-executable
+        stages: [pre-commit]
       - id: check-executables-have-shebangs
+        stages: [pre-commit]
       - id: check-merge-conflict
+        stages: [pre-commit]
       - id: check-case-conflict
+        stages: [pre-commit]
       - id: check-symlinks
+        stages: [pre-commit]
       - id: destroyed-symlinks
+        stages: [pre-commit]
       - id: detect-private-key
+        stages: [pre-commit]
       - id: mixed-line-ending
         exclude: "(^.idea/|.vscode/)"
+        stages: [pre-commit]
       - id: trailing-whitespace
         exclude: "(^.idea/|.vscode/)"
+        stages: [pre-commit]
       - id: end-of-file-fixer
         exclude: "(^.idea/|.vscode/)"
+        stages: [pre-commit]
 
   - repo: https://github.com/google/yapf
     rev: v0.40.2
     hooks:
       - id: yapf
+        args: ["ALLOW_SPLIT_BEFORE_DICT_VALUE"]
         exclude: ^.*\b(migrations)\b.*$
+        stages: [pre-commit]
 
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
       - id: isort
+        exclude: ^.*\b(migrations)\b.*$
+        stages: [pre-commit]
 
   - repo: https://github.com/pycqa/flake8
     rev: 7.1.0
     hooks:
       - id: flake8
+        exclude: ^.*\b(migrations)\b.*$
+        stages: [pre-commit]
         additional_dependencies:
           # automated security testing
           - flake8-bandit
@@ -65,3 +88,10 @@ repos:
 
           # validate names of things
           - pep8-naming
+
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.28.0
+    hooks:
+      - id: commitizen
+      - id: commitizen-branch
+        stages: [push]
