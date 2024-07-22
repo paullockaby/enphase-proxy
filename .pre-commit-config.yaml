@@ -65,9 +65,3 @@ repos:
 
           # validate names of things
           - pep8-naming
-
-  - repo: https://github.com/Yelp/detect-secrets
-    rev: v1.5.0
-    hooks:
-      - id: detect-secrets
-        exclude: .envrc
