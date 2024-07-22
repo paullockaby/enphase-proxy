@@ -2,25 +2,29 @@ exclude: '^$'
 fail_fast: false
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: check-added-large-files
+      - id: check-ast
+      - id: check-docstring-first
       - id: check-json
+      - id: check-toml
       - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-xml
       - id: check-shebang-scripts-are-executable
-      - id: check-symlinks
-      - id: destroyed-symlinks
+      - id: check-executables-have-shebangs
       - id: check-merge-conflict
       - id: check-case-conflict
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: detect-private-key
       - id: mixed-line-ending
         exclude: "(^.idea/|.vscode/)"
       - id: trailing-whitespace
         exclude: "(^.idea/|.vscode/)"
       - id: end-of-file-fixer
         exclude: "(^.idea/|.vscode/)"
-
-      # this checks whether the python code is valid
-      - id: check-ast
 
   - repo: https://github.com/google/yapf
     rev: v0.40.2
@@ -34,7 +38,7 @@ repos:
       - id: isort
 
   - repo: https://github.com/pycqa/flake8
-    rev: 7.0.0
+    rev: 7.1.0
     hooks:
       - id: flake8
         additional_dependencies:
@@ -61,3 +65,9 @@ repos:
 
           # validate names of things
           - pep8-naming
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        exclude: .envrc
