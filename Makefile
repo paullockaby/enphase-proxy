@@ -56,8 +56,8 @@ pre-commit:
 
 .PHONY: bump
 bump:
-	cz bump
+	cz bump --changelog
 
 .PHONY: bump-check
 bump-check:
-	cz bump --dry-run
+	cz bump --changelog --dry-run
