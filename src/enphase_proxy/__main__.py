@@ -32,7 +32,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-b",
         "--bind",
-        dest="address",
+        dest="bind",
         default="127.0.0.1",
         type=str,
         help="interface to listen on",
