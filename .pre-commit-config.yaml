@@ -1,5 +1,7 @@
 exclude: '^$'
 fail_fast: false
+default_install_hook_types: [pre-commit, pre-push, commit-msg]
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
@@ -88,6 +90,12 @@ repos:
 
           # validate names of things
           - pep8-naming
+
+  - repo: https://github.com/python-poetry/poetry
+    rev: 1.8.0
+    hooks:
+      - id: poetry-check
+        stages: [pre-commit]
 
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v3.28.0
