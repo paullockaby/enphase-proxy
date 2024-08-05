@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import urlencode
 
 import aiohttp
 from quart import Quart, Response, jsonify, make_response, request
@@ -43,9 +44,15 @@ def load() -> Quart:
     @app.route("/", defaults={"path": ""}, methods=["HEAD", "GET", "POST"])
     @app.route("/<path:path>", methods=["HEAD", "GET", "POST"])
     async def proxy(path: str) -> Response:
+        destination = f"/{path}"
+        args = dict(request.args.lists())
+        if len(args):
+            destination = f"{destination}?{urlencode(args, doseq=True)}"
+        app.logger.debug("sending request for: %s", destination)
+
         async with app.config["LOCAL_API_SESSION"].request(
                 request.method,
-                f"/{path}",
+                destination,
                 ssl=False,
                 headers={"Authorization": f"Bearer {credentials_updater.credentials}"},
         ) as result:
