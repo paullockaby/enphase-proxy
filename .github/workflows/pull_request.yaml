@@ -1,0 +1,18 @@
+name: Pull Requests
+
+on:
+  pull_request:
+
+jobs:
+  # NOTE: you can make these tests required in the pull request by creating a ruleset and then checking "Require status
+  # checks to pass" and then, under "Status checks that are required" click "Add checks" and just type in these:
+  #    - "tests / pre-commit"
+  #    - "tests / test"
+  #
+  # NOTE: if you had the jobs directly in this file you could just refer to them by the yaml identifier for the job.
+  # for example, this job is called "tests" so you'd put "tests" as a required "status check". and if you were to take
+  # the contents of tests.yaml and put it into here then you'd want to set "pre-commit" and "test" as required status
+  # checks.
+  tests:
+    uses: ./.github/workflows/tests.yaml
+    secrets: inherit

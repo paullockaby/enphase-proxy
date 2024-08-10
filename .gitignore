@@ -4,6 +4,7 @@
 .DS_Store?
 .Trashes
 Thumbs.db
+.envrc
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

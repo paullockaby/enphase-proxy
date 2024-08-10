@@ -1,0 +1,55 @@
+name: Linters and Tests
+
+on:
+  workflow_call:
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.x"
+          cache: "pip"
+
+      - name: Run linter
+        uses: pre-commit/action@v3.0.1
+        env:
+          SKIP: no-commit-to-branch
+
+  test:
+    runs-on: ubuntu-latest
+
+    needs:
+      - pre-commit
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.x"
+          cache: "poetry"
+
+      - name: Run python tests
+        run: |
+          poetry install --no-interaction
+          poetry run pytest --mypy --cov=src --cov-report=term --cov-fail-under=50
+
+      - name: Run container tests
+        run: |
+          docker build .

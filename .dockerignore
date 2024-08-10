@@ -18,6 +18,7 @@
 .python-version
 
 # Environments
+**/.env
 **/.envrc
 **/.venv
 **/venv/

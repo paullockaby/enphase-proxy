@@ -44,6 +44,9 @@ repos:
       - id: end-of-file-fixer
         exclude: "(^.idea/|.vscode/)"
         stages: [pre-commit]
+      - id: no-commit-to-branch
+        args: [--branch, main]
+        stages: [pre-commit]
 
   - repo: https://github.com/google/yapf
     rev: v0.40.2

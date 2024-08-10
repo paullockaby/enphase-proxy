@@ -7,7 +7,7 @@
 
 # make sure we have a correctly configured environment
 [ -z "$APP_ROOT" ] && exit 1
-cd $APP_ROOT || exit 1
+cd "$APP_ROOT" || exit 1
 
 # use arguments entirely from the caller and make no assumptions
-exec tini -- $VIRTUALENV/bin/hypercorn $APP_NAME.asgi:app "$@"
+exec tini -- "$VIRTUALENV"/bin/hypercorn "$APP_NAME".asgi:app "$@"

@@ -1,0 +1,71 @@
+name: Create Release
+
+on:
+  # only trigger this workflow manually
+  workflow_dispatch:
+    inputs:
+      increment:
+        description: "Set a field to increment."
+        required: false
+        default: ""
+        type: choice
+        options:
+          - ""
+          - MAJOR
+          - MINOR
+          - PATCH
+      prerelease:
+        description: "Set as a prerelease version."
+        required: false
+        default: ""
+        type: choice
+        options:
+          - ""
+          - alpha
+          - beta
+          - rc
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yaml
+    secrets: inherit
+
+  bump_version:
+    runs-on: ubuntu-latest
+
+    # only run if the other jobs succeed
+    needs:
+      - tests
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ssh-key: "${{ secrets.DEPLOY_KEY }}"
+
+      - id: cz
+        name: Create changelog and bump version
+        uses: commitizen-tools/commitizen-action@0.21.0
+        with:
+          changelog: true
+          changelog_increment_filename: "changes.md"
+          git_redirect_stderr: true
+          increment: ${{ inputs.increment }}
+          prerelease: ${{ inputs.prerelease }}
+          push: false
+
+      - name: Push changelog updates
+        run: |
+          git push origin main --tags
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2.0.8
+        with:
+          body_path: "changes.md"
+          tag_name: "v${{ steps.cz.outputs.version }}"
+
+      - run: |
+          echo "Bumped to version v${{ steps.cz.outputs.version }}"

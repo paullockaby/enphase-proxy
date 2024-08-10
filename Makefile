@@ -28,7 +28,7 @@ lint: install
 
 .PHONY: test
 test: install
-	poetry run pytest --cov=src --cov-report=term --cov-report=html
+	poetry run pytest --cov=src --cov-report=term --cov-report=html --mypy
 
 .PHONY: build
 build:
@@ -47,17 +47,13 @@ push:
 
 .PHONY: clean
 clean:
-	rm -rf dist/ .pytest_cache/ .coverage htmlcov/
+	rm -rf dist/ .pytest_cache/ .coverage htmlcov/ .mypy_cache/
 	find . -type d -name "__pycache__" -print0 | xargs -0 rm -rf
 
 .PHONY: pre-commit
 pre-commit:
-	pre-commit install --hook-type commit-msg --hook-type pre-push --hook-type pre-commit
-
-.PHONY: bump
-bump:
-	cz bump --changelog
+	poetry run pre-commit install
 
 .PHONY: bump-check
 bump-check:
-	cz bump --changelog --dry-run
+	cz bump --dry-run

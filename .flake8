@@ -1,7 +1,7 @@
 [flake8]
 inline-quotes = double
 extend-ignore =
-    E501,S311
+    E501
 per-file-ignores =
     tests/*:S101,B011,ANN
 exclude =
@@ -9,3 +9,4 @@ exclude =
     .github
     __pycache__
     .venv
+    */migrations/*
