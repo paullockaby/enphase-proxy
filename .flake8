@@ -1,7 +1,8 @@
 [flake8]
+max-line-length = 120
 inline-quotes = double
 extend-ignore =
-    E501
+    E501,E203
 per-file-ignores =
     tests/*:S101,B011,ANN
 exclude =

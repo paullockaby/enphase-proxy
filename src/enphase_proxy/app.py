@@ -35,11 +35,15 @@ def load() -> Quart:
     @app.route("/_/health")
     async def health() -> Response:
         return await make_response(
-            jsonify({
-                "status": "pass",
-                "message": "flux capacitor is fluxing",
-                "version": __version__,
-            }), 200)
+            jsonify(
+                {
+                    "status": "pass",
+                    "message": "flux capacitor is fluxing",
+                    "version": __version__,
+                }
+            ),
+            200,
+        )
 
     @app.route("/", defaults={"path": ""}, methods=["HEAD", "GET", "POST"])
     @app.route("/<path:path>", methods=["HEAD", "GET", "POST"])
@@ -51,10 +55,10 @@ def load() -> Quart:
         app.logger.debug("sending request for: %s", destination)
 
         async with app.config["LOCAL_API_SESSION"].request(
-                request.method,
-                destination,
-                ssl=False,
-                headers={"Authorization": f"Bearer {credentials_updater.credentials}"},
+            request.method,
+            destination,
+            ssl=False,
+            headers={"Authorization": f"Bearer {credentials_updater.credentials}"},
         ) as result:
             content = await result.text()
             status_code = result.status

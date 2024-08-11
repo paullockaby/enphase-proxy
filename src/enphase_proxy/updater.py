@@ -158,9 +158,9 @@ class CredentialsManager:
 
     async def _fetch_credentials(self: "CredentialsManager") -> dict:
         async with aiohttp.ClientSession(
-                raise_for_status=True,
-                base_url=self.enphase_url,
-                skip_auto_headers={"User-Agent"},
+            raise_for_status=True,
+            base_url=self.enphase_url,
+            skip_auto_headers={"User-Agent"},
         ) as session:
             # get the session id
             url = "/login/login.json"
