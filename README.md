@@ -171,7 +171,7 @@ If you have security feedback you can reach out to [contact@paullockaby.com](mai
 
 ## License
 
-Copyright &copy; 2024 Paul Lockaby. All rights reserved.
+Copyright &copy; 2023-2024 Paul Lockaby. All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 

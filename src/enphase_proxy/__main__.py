@@ -5,7 +5,8 @@ import sys
 from enphase_proxy import __version__
 from enphase_proxy.app import load
 
-if __name__ == "__main__":
+
+def main(*args) -> int:
     parser = argparse.ArgumentParser(prog="enphase_proxy")
     parser.add_argument(
         "--version",
@@ -37,7 +38,7 @@ if __name__ == "__main__":
         type=str,
         help="interface to listen on",
     )
-    args = parser.parse_args()
+    args = parser.parse_args(args=args)
 
     # send application logs to stdout
     logging.basicConfig(
@@ -53,3 +54,9 @@ if __name__ == "__main__":
         debug=args.verbose,
         use_reloader=False,
     )
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(*sys.argv[1:]))

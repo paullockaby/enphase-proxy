@@ -28,7 +28,7 @@ lint: install
 
 .PHONY: test
 test: install
-	poetry run pytest --cov=src --cov-report=term --cov-report=html --mypy
+	poetry run pytest --cov=src --cov-report=term --cov-report=html
 
 .PHONY: build
 build:
@@ -38,7 +38,7 @@ build:
 .PHONY: buildx
 buildx:
 	@echo "building multiarch image for ${IMAGE_ID}"
-	docker buildx build --platform linux/amd64,linux/arm64 -t $(IMAGE_ID) .
+	docker buildx build --platform linux/amd64,linux/arm64 -t $(IMAGE_NAME):latest .
 
 .PHONY: push
 push:
