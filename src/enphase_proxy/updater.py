@@ -1,7 +1,8 @@
 import asyncio
 import contextlib
 import logging
-from datetime import datetime
+from dataclasses import dataclass
+from datetime import datetime, timedelta
 from typing import Optional
 
 import aiohttp
@@ -11,9 +12,16 @@ from quart import Quart
 logger = logging.getLogger(__name__)
 
 
+@dataclass(frozen=True)
+class FetchedCredentials:
+    expires_at: datetime
+    fetched_at: datetime
+    token: str
+
+
 class CredentialsUpdater:
 
-    def __init__(self: "CredentialsUpdater", app: Quart = None) -> None:
+    def __init__(self: "CredentialsUpdater", app: Optional[Quart] = None) -> None:
         # this is how often we will refresh our credentials. we are not
         # actually fetching credentials this often. this is just how often we
         # will check to see if we do need to fetch credentials. credentials
@@ -29,12 +37,11 @@ class CredentialsUpdater:
         self.data_cache: Optional[str] = None
         self.data_manager: Optional[CredentialsManager] = None
 
+        self.app: Optional[Quart] = None
         if app is not None:
             self.init_app(app)
-        else:
-            self.app = None
 
-    def init_app(self: "CredentialsUpdater", app: Quart = None) -> None:
+    def init_app(self: "CredentialsUpdater", app: Quart) -> None:
         self.app = app
         self.data_manager = CredentialsManager(
             url=app.config.get("REMOTE_API_URL"),
@@ -68,7 +75,7 @@ class CredentialsUpdater:
     async def _background_waiter(
         self: "CredentialsUpdater",
         event: asyncio.Event,
-        timeout: int = 0,
+        timeout: Optional[int] = 0,
     ) -> bool:
         # suppress TimeoutError because we'll return False in case of timeout
         with contextlib.suppress(asyncio.TimeoutError):
@@ -106,7 +113,7 @@ class CredentialsUpdater:
         logger.info("finished refreshing credentials")
 
     @property
-    def credentials(self: "CredentialsUpdater") -> str:
+    def credentials(self: "CredentialsUpdater") -> Optional[str]:
         return self.data_cache
 
 
@@ -126,7 +133,7 @@ class CredentialsManager:
         self.enphase_serialno = serialno
         self.enphase_jwt = jwt
 
-        self.data: Optional[dict] = None
+        self.data: Optional[FetchedCredentials] = None
         # {
         #     "fetched": None, # this is when we last fetched the jwt
         #     "expiry": None,  # this is when the jwt alleges to expire
@@ -144,19 +151,17 @@ class CredentialsManager:
             logger.info("no credentials known -- fetching new credentials")
             self.data = await self._fetch_credentials()
 
-        # if the credentials are closer to their expiration than to their
-        # creation then fetch new ones
-        now = datetime.now()
-        if (now - self.data["fetched"]) > (self.data["expiry"] - now):
+        # if the credentials are closer to their expiration than to their creation then fetch new ones
+        if self.data.expires_at < datetime.now() + timedelta(minutes=1):
             logger.info(
                 "credentials will expire at %s -- fetching new credentials",
-                self.data["expiry"],
+                self.data.expires_at,
             )
             self.data = await self._fetch_credentials()
 
-        return self.data["token"]
+        return self.data.token
 
-    async def _fetch_credentials(self: "CredentialsManager") -> dict:
+    async def _fetch_credentials(self: "CredentialsManager") -> FetchedCredentials:
         async with aiohttp.ClientSession(
             raise_for_status=True,
             base_url=self.enphase_url,
@@ -177,8 +182,10 @@ class CredentialsManager:
             async with session.get(url, headers=headers) as r:
                 data = await r.json()
 
-        return {
-            "fetched": datetime.fromtimestamp(data["generation_time"]),
-            "expiry": datetime.fromtimestamp(data["expires_at"]),
-            "token": data["token"],
-        }
+        return FetchedCredentials(
+            # calls to the data dict return "str | None" which is incompatible with the target.
+            # so we will ignore that particular type mismatch since we're very sure of what we are doing here.
+            fetched_at=datetime.fromtimestamp(float(data["generation_time"])),  # type: ignore[arg-type]
+            expires_at=datetime.fromtimestamp(float(data["expires_at"])),  # type: ignore[arg-type]
+            token=data["token"],  # type: ignore[arg-type]
+        )

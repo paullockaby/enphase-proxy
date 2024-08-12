@@ -2,7 +2,8 @@ import logging
 from urllib.parse import urlencode
 
 import aiohttp
-from quart import Quart, Response, jsonify, make_response, request
+from quart import Quart, jsonify, make_response, request
+from quart.helpers import ResponseTypes
 
 from enphase_proxy import __version__
 
@@ -22,7 +23,7 @@ def load() -> Quart:
     # initialize a client connection pool for the local api
     @app.before_serving
     async def startup() -> None:
-        app.config["LOCAL_API_SESSION"]: aiohttp.ClientSession = aiohttp.ClientSession(
+        app.config["LOCAL_API_SESSION"] = aiohttp.ClientSession(
             base_url=app.config["LOCAL_API_URL"],
             skip_auto_headers={"User-Agent"},
         )
@@ -33,7 +34,7 @@ def load() -> Quart:
             await app.config["LOCAL_API_SESSION"].close()
 
     @app.route("/_/health")
-    async def health() -> Response:
+    async def health() -> ResponseTypes:
         return await make_response(
             jsonify(
                 {
@@ -47,7 +48,7 @@ def load() -> Quart:
 
     @app.route("/", defaults={"path": ""}, methods=["HEAD", "GET", "POST"])
     @app.route("/<path:path>", methods=["HEAD", "GET", "POST"])
-    async def proxy(path: str) -> Response:
+    async def proxy(path: str) -> ResponseTypes:
         destination = f"/{path}"
         args = dict(request.args.lists())
         if len(args):

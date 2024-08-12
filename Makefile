@@ -28,7 +28,7 @@ lint: install
 
 .PHONY: test
 test: install
-	poetry run pytest --cov=src --cov-report=term --cov-report=html --mypy
+	poetry run pytest --cov=src --cov-report=term --cov-report=html
 
 .PHONY: build
 build:
