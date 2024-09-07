@@ -22,10 +22,6 @@ all: build
 install:
 	poetry install --no-interaction
 
-.PHONY: lint
-lint: install
-	poetry run pre-commit run --all-files
-
 .PHONY: test
 test: install
 	poetry run pytest --cov=src --cov-report=term --cov-report=html
@@ -49,10 +45,19 @@ push:
 clean:
 	rm -rf dist/ .pytest_cache/ .coverage htmlcov/ .mypy_cache/
 	find . -type d -name "__pycache__" -print0 | xargs -0 rm -rf
+	find . -type f -name .DS_Store -print0 | xargs -0 rm -f
+
+.PHONY: safety
+safety:
+	safety --disable-optional-telemetry check --output=screen --file=poetry.lock --cache
+
+.PHONY: lint
+lint:
+	pre-commit run --all-files
 
 .PHONY: pre-commit
 pre-commit:
-	poetry run pre-commit install
+	pre-commit install
 
 .PHONY: bump-check
 bump-check:
