@@ -5,4 +5,3 @@ security:
   ignore-vulnerabilities:
     70612:
       reason: "No new release has been made and the vulnerability is kind of bogus."
-      expires: "2024-10-01"
