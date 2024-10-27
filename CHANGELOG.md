@@ -1,3 +1,19 @@
+## v1.4.1 (2024-10-27)
+
+### Fix
+
+- **deps**: updating base docker image
+- **deps**: bump werkzeug from 3.0.4 to 3.0.6 in the pip group
+- **deps**: bump quart from 0.19.6 to 0.19.7 in the pip group
+- updating dockerfile to use new base python image
+- updating pre-commit configuration
+- **deps**: bump aiohttp from 3.10.5 to 3.10.8
+- **deps-dev**: bump pytest from 8.3.2 to 8.3.3
+- **deps**: update base image
+- remove pre-commit from deps, update dependencies
+- **deps**: bump aiohttp from 3.10.3 to 3.10.5
+- **deps-dev**: bump pytest-asyncio from 0.23.8 to 0.24.0
+
 ## v1.4.0 (2024-08-12)
 
 ### Feat
