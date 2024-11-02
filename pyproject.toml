@@ -20,7 +20,7 @@ hypercorn = {extras = ["uvloop"], version = "^0.17.3"}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.1"
-pytest-cov = "^5.0.0"
+pytest-cov = "^6.0.0"
 pytest-mypy = "^0.10.3"
 pytest-asyncio = "^0.24.0"
 
