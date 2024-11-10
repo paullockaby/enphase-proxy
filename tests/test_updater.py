@@ -61,8 +61,8 @@ async def test_credentials_fetch_new_credentials(
     mock_fetch_credentials.assert_called_once()
 
 
-@patch("aiohttp.ClientSession.post")
-@patch("aiohttp.ClientSession.get")
+@patch("httpx.AsyncClient.post")
+@patch("httpx.AsyncClient.get")
 @pytest.mark.asyncio
 async def test_fetch_credentials(mock_get: MagicMock, mock_post: MagicMock, credentials_manager: CredentialsManager):
     session_id = "session_id"
@@ -71,8 +71,11 @@ async def test_fetch_credentials(mock_get: MagicMock, mock_post: MagicMock, cred
         "expires_at": (datetime.now() + timedelta(hours=1)).timestamp(),
         "token": "new_token",
     }
-    mock_post.return_value.__aenter__.return_value.json.return_value = {"session_id": session_id}
-    mock_get.return_value.__aenter__.return_value.json.return_value = jwt_data
+
+    mock_post.return_value.json = MagicMock(return_value={"session_id": session_id})
+    mock_post.return_value.raise_for_status = MagicMock()
+    mock_get.return_value.json = MagicMock(return_value=jwt_data)
+    mock_get.return_value.raise_for_status = MagicMock()
 
     credentials_data = await credentials_manager._fetch_credentials()
 

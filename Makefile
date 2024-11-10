@@ -47,10 +47,6 @@ clean:
 	find . -type d -name "__pycache__" -print0 | xargs -0 rm -rf
 	find . -type f -name .DS_Store -print0 | xargs -0 rm -f
 
-.PHONY: safety
-safety:
-	safety --disable-optional-telemetry check --output=screen --file=poetry.lock --cache
-
 .PHONY: lint
 lint:
 	pre-commit run --all-files

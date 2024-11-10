@@ -1,7 +1,7 @@
 import logging
 from urllib.parse import urlencode
 
-import aiohttp
+import httpx
 from quart import Quart, jsonify, make_response, request
 from quart.helpers import ResponseTypes
 
@@ -19,19 +19,6 @@ def load() -> Quart:
 
     # initialize the system that fetches the enphase jwt
     credentials_updater = CredentialsUpdater(app)
-
-    # initialize a client connection pool for the local api
-    @app.before_serving
-    async def startup() -> None:
-        app.config["LOCAL_API_SESSION"] = aiohttp.ClientSession(
-            base_url=app.config["LOCAL_API_URL"],
-            skip_auto_headers={"User-Agent"},
-        )
-
-    @app.after_serving
-    async def shutdown() -> None:
-        if app.config["LOCAL_API_SESSION"]:
-            await app.config["LOCAL_API_SESSION"].close()
 
     @app.route("/_/health")
     async def health() -> ResponseTypes:
@@ -55,18 +42,21 @@ def load() -> Quart:
             destination = f"{destination}?{urlencode(args, doseq=True)}"
         app.logger.debug("sending request for: %s", destination)
 
-        async with app.config["LOCAL_API_SESSION"].request(
-            request.method,
-            destination,
-            ssl=False,
-            headers={"Authorization": f"Bearer {credentials_updater.credentials}"},
-        ) as result:
-            content = await result.text()
-            status_code = result.status
-            content_type = result.headers.get("content-type")
+        async with httpx.AsyncClient(
+            verify=False,  # noqa S501
+            timeout=300,
+            base_url=app.config["LOCAL_API_URL"],
+        ) as client:
+            result = await client.request(
+                request.method,
+                destination,
+                headers={"Authorization": f"Bearer {credentials_updater.credentials}"},
+            )
+            content = result.text
+            status_code = result.status_code
 
             response = await make_response(content, status_code)
-            response.headers["Content-Type"] = content_type
+            response.headers["Content-Type"] = result.headers.get("content-type")
             return response
 
     # tell ourselves what we've mapped

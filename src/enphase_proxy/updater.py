@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Optional
 
-import aiohttp
+import httpx
 import tenacity
 from quart import Quart
 
@@ -162,25 +162,23 @@ class CredentialsManager:
         return self.data.token
 
     async def _fetch_credentials(self: "CredentialsManager") -> FetchedCredentials:
-        async with aiohttp.ClientSession(
-            raise_for_status=True,
-            base_url=self.enphase_url,
-            skip_auto_headers={"User-Agent"},
-        ) as session:
+        async with httpx.AsyncClient(base_url=self.enphase_url, headers={"User-Agent": ""}, timeout=60) as client:
             # get the session id
             url = "/login/login.json"
             data = {
                 "user[email]": self.enphase_username,
                 "user[password]": self.enphase_password,
             }
-            async with session.post(url, data=data) as r:
-                session_id = (await r.json())["session_id"]
+            result = await client.post(url, data=data)
+            result.raise_for_status()
+            session_id = result.json()["session_id"]
 
             # then get the jwt with the session id
             url = f"/entrez-auth-token?serial_num={self.enphase_serialno}"
             headers = {"Cookie": f"_enlighten_4_session={session_id}"}
-            async with session.get(url, headers=headers) as r:
-                data = await r.json()
+            result = await client.get(url, headers=headers)
+            result.raise_for_status()
+            data = result.json()
 
         return FetchedCredentials(
             # calls to the data dict return "str | None" which is incompatible with the target.
