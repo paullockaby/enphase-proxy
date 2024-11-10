@@ -1,3 +1,19 @@
+## v1.5.0 (2024-11-10)
+
+### Feat
+
+- replacing aiohttp with httpx
+
+### Fix
+
+- adding recommended security fix to dockerfile
+- removing deprecated safety tool
+- updating pre-commit versions
+- **deps**: bump quart from 0.19.7 to 0.19.8
+- **deps-dev**: bump pytest-cov from 5.0.0 to 6.0.0
+- **deps**: bump softprops/action-gh-release from 2.0.8 to 2.0.9
+- **deps**: bump aiohttp from 3.10.8 to 3.10.10
+
 ## v1.4.1 (2024-10-27)
 
 ### Fix
