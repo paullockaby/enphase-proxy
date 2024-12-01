@@ -48,7 +48,7 @@ jobs:
 
       - id: cz
         name: Create changelog and bump version
-        uses: commitizen-tools/commitizen-action@0.21.0
+        uses: commitizen-tools/commitizen-action@0.22.0
         with:
           changelog: true
           changelog_increment_filename: "changes.md"
