@@ -16,7 +16,7 @@ python = "^3.12 <3.13"
 quart = "^0.19.3"
 tenacity = "^9.0.0"
 hypercorn = {extras = ["uvloop"], version = "^0.17.3"}
-httpx = "^0.27.2"
+httpx = "^0.28.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.1"
