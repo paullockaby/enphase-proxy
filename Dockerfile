@@ -34,8 +34,8 @@ RUN poetry config virtualenvs.in-project true && \
     poetry install --without=dev --no-interaction --no-directory --no-root
 
 # now copy over the application
-COPY --chown=1000:1000 src/$APP_NAME $APP_ROOT/$APP_NAME
-COPY --chown=1000:1000 src/configurations $APP_ROOT/configurations
+COPY --chown=1000:1000 src $APP_ROOT/src/
+RUN poetry install --without=dev --no-interaction
 
 # update the version number of our application
 COPY --chown=1000:1000 .git/ $APP_ROOT/.git
@@ -46,8 +46,7 @@ FROM base AS final
 # copy over our actual application
 COPY --from=builder --chown=0:0 $APP_ROOT/entrypoint /entrypoint
 COPY --from=builder --chown=0:0 $APP_ROOT/.venv $APP_ROOT/.venv
-COPY --from=builder --chown=0:0 $APP_ROOT/$APP_NAME $APP_ROOT/$APP_NAME
-COPY --from=builder --chown=0:0 $APP_ROOT/configurations $APP_ROOT/configurations
+COPY --from=builder --chown=0:0 $APP_ROOT/src $APP_ROOT/src
 
 # set up the virtual environment
 ENV VIRTUALENV=$APP_ROOT/.venv
