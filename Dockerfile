@@ -33,9 +33,10 @@ RUN poetry config virtualenvs.in-project true && \
     poetry config virtualenvs.create true && \
     poetry install --without=dev --no-interaction --no-directory --no-root
 
-# update the version number of our application
-COPY --chown=1000:1000 .git/ $APP_ROOT/.git
-RUN poetry version $(dunamai from git --dirty)
+# get and set the version number of the application
+RUN mkdir -p /tmp/src
+COPY --chown=1000:1000 . /tmp/src/
+RUN poetry version $(dunamai from git --dirty --path=/tmp/src)
 
 # now copy over the application
 COPY --chown=1000:1000 src $APP_ROOT/src/
