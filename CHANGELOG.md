@@ -1,3 +1,19 @@
+## v1.6.0 (2024-12-07)
+
+### Fix
+
+- get version number from a clean build
+- put application version into the dockerfile
+- enable error handling in entrypoint script
+- **deps**: updating commitizen pre-commit hook
+- **deps**: bumping python docker container version to 3.12.8
+- allow poetry to install the package into the venv
+- **deps**: bump quart from 0.19.8 to 0.19.9
+- **deps-dev**: bump pytest from 8.3.3 to 8.3.4
+- **deps**: bump commitizen-tools/commitizen-action from 0.21.0 to 0.22.0
+- **deps**: bump softprops/action-gh-release from 2.0.9 to 2.1.0
+- **deps**: bump httpx from 0.27.2 to 0.28.0
+
 ## v1.5.0 (2024-11-10)
 
 ### Feat
