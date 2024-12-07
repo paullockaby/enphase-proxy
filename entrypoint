@@ -1,8 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -euo pipefail
 
 # use like this:
 #
-#    /entrypoint
+#    /entrypoint -b 0.0.0.0:8080
 #
 
 # make sure we have a correctly configured environment
