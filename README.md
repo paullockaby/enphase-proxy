@@ -52,7 +52,7 @@ poetry run hypercorn \
 Still a third way to run this program is with Docker, like this:
 
 ```
-docker build -t enphase_proxy .
+make build
 
 # using the login mechanism
 docker run --rm \
@@ -62,7 +62,7 @@ docker run --rm \
     -e ENPHASE_REMOTE_API_PASSWORD=$ENPHASE_REMOTE_API_PASSWORD \
     -e ENPHASE_REMOTE_API_SERIALNO=$ENPHASE_REMOTE_API_SERIALNO \
     -e ENPHASE_REMOTE_API_URL=$ENPHASE_REMOTE_API_URL \
-    enphase_proxy \
+    ghcr.io/paullockaby/enphase-proxy \
     --bind=:8080 \
     --access-logfile=- \
     --error-logfile=- \
@@ -73,7 +73,7 @@ docker run --rm \
     -p 8080:8080 \
     -e ENPHASE_LOCAL_API_URL=$ENPHASE_LOCAL_API_URL \
     -e ENPHASE_LOCAL_API_JWT=$ENPHASE_LOCAL_API_JWT \
-    enphase_proxy \
+    ghcr.io/paullockaby/enphase-proxy \
     --bind=:8080 \
     --access-logfile=- \
     --error-logfile=- \

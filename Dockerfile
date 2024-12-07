@@ -1,4 +1,4 @@
-FROM python:3.12.7-slim-bookworm@sha256:032c52613401895aa3d418a4c563d2d05f993bc3ecc065c8f4e2280978acd249 AS base
+FROM python:3.12.8-slim-bookworm@sha256:2b0079146a74e23bf4ae8f6a28e1b484c6292f6fb904cbb51825b4a19812fcd8 AS base
 
 # github metadata
 LABEL org.opencontainers.image.source=https://github.com/paullockaby/enphase-proxy
@@ -33,21 +33,21 @@ RUN poetry config virtualenvs.in-project true && \
     poetry config virtualenvs.create true && \
     poetry install --without=dev --no-interaction --no-directory --no-root
 
-# now copy over the application
-COPY --chown=1000:1000 src/$APP_NAME $APP_ROOT/$APP_NAME
-COPY --chown=1000:1000 src/configurations $APP_ROOT/configurations
+# get and set the version number of the application
+RUN mkdir -p /tmp/src
+COPY --chown=1000:1000 . /tmp/src/
+RUN poetry version $(dunamai from git --dirty --path=/tmp/src)
 
-# update the version number of our application
-COPY --chown=1000:1000 .git/ $APP_ROOT/.git
-RUN poetry version $(dunamai from git --dirty)
+# now copy over the application
+COPY --chown=1000:1000 src $APP_ROOT/src/
+RUN poetry install --without=dev --no-interaction
 
 FROM base AS final
 
 # copy over our actual application
 COPY --from=builder --chown=0:0 $APP_ROOT/entrypoint /entrypoint
 COPY --from=builder --chown=0:0 $APP_ROOT/.venv $APP_ROOT/.venv
-COPY --from=builder --chown=0:0 $APP_ROOT/$APP_NAME $APP_ROOT/$APP_NAME
-COPY --from=builder --chown=0:0 $APP_ROOT/configurations $APP_ROOT/configurations
+COPY --from=builder --chown=0:0 $APP_ROOT/src $APP_ROOT/src
 
 # set up the virtual environment
 ENV VIRTUALENV=$APP_ROOT/.venv
