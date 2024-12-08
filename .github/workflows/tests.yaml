@@ -5,6 +5,7 @@ on:
 
 jobs:
   pre-commit:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
     permissions:
@@ -24,11 +25,31 @@ jobs:
         env:
           SKIP: no-commit-to-branch
 
-  test:
+  security:
     runs-on: ubuntu-latest
 
-    needs:
-      - pre-commit
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup trivy
+        uses: aquasecurity/setup-trivy@v0.2.2
+        with:
+          cache: true
+          version: latest
+
+      - name: Run trivy configuration checks
+        run: |
+          trivy config . --config=.trivy.yaml --ignorefile=.trivyignore
+
+      - name: Run trivy filesystem checks
+        run: |
+          trivy filesystem . --config=.trivy.yaml --ignorefile=.trivyignore --no-progress
+
+  test:
+    runs-on: ubuntu-latest
 
     permissions:
       contents: read
