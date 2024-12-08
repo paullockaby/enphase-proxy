@@ -8,6 +8,7 @@ jobs:
   # checks to pass" and then, under "Status checks that are required" click "Add checks" and just type in these:
   #    - "tests / pre-commit"
   #    - "tests / test"
+  #    - "security / security"
   #
   # NOTE: if you had the jobs directly in this file you could just refer to them by the yaml identifier for the job.
   # for example, this job is called "tests" so you'd put "tests" as a required "status check". and if you were to take
@@ -15,4 +16,8 @@ jobs:
   # checks.
   tests:
     uses: ./.github/workflows/tests.yaml
+    secrets: inherit
+
+  security:
+    uses: ./.github/workflows/security.yaml
     secrets: inherit
