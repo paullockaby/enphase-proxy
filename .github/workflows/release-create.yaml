@@ -30,6 +30,10 @@ jobs:
     uses: ./.github/workflows/tests.yaml
     secrets: inherit
 
+  security:
+    uses: ./.github/workflows/security.yaml
+    secrets: inherit
+
   bump_version:
     runs-on: ubuntu-latest
 
