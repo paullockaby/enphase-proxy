@@ -2,7 +2,7 @@
 name = "enphase-proxy"
 readme = "README.md"
 license = {file = "LICENSE"}
-requires-python = ">=3.12 <3.13"
+requires-python = ">=3.13 <3.14"
 
 [tool.poetry]
 name = "enphase-proxy"
@@ -12,7 +12,7 @@ authors = ["Paul Lockaby <paul@paullockaby.com>"]
 packages = [{include = "enphase_proxy", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.12 <3.13"
+python = "^3.13 <3.14"
 quart = "^0.19.3"
 tenacity = "^9.0.0"
 hypercorn = {extras = ["uvloop"], version = "^0.17.3"}
