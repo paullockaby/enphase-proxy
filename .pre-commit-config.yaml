@@ -52,7 +52,7 @@ repos:
     rev: 24.10.0
     hooks:
       - id: black
-        language_version: python3.12
+        language_version: python3.13
         args: [--line-length=120]
         exclude: ^.*\b(migrations)\b.*$
         stages: [pre-commit]
