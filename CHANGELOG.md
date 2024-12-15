@@ -1,3 +1,14 @@
+## v1.7.0 (2024-12-15)
+
+### Feat
+
+- enable weekly security scan
+- enable trivy scanning in pipelines
+
+### Fix
+
+- updating python version to 3.13 and various actions updates
+
 ## v1.6.0 (2024-12-07)
 
 ### Fix
