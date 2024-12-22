@@ -52,10 +52,10 @@ jobs:
 
       - id: cz
         name: Create changelog and bump version
-        uses: commitizen-tools/commitizen-action@0.23.0
+        uses: commitizen-tools/commitizen-action@0.23.1
         with:
           changelog: true
-          changelog_increment_filename: "changes.md"
+          changelog_increment_filename: "CHANGELOG.md"
           git_redirect_stderr: true
           increment: ${{ inputs.increment }}
           prerelease: ${{ inputs.prerelease }}
@@ -68,7 +68,7 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@v2.2.0
         with:
-          body_path: "changes.md"
+          body_path: "CHANGELOG.md"
           tag_name: "v${{ steps.cz.outputs.version }}"
 
       - run: |
