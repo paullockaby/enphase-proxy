@@ -13,7 +13,7 @@ packages = [{include = "enphase_proxy", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.13 <3.14"
-quart = "^0.19.3"
+quart = "^0.20.0"
 tenacity = "^9.0.0"
 hypercorn = {extras = ["uvloop"], version = "^0.17.3"}
 httpx = "^0.28.0"
