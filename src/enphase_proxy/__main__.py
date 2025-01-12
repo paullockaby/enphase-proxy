@@ -6,8 +6,9 @@ from enphase_proxy import __version__
 from enphase_proxy.app import load
 
 
-def main(*args) -> int:
-    parser = argparse.ArgumentParser(prog="enphase_proxy")
+def parse_arguments(arguments: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(prog="enphase-proxy")
+
     parser.add_argument(
         "--version",
         action="version",
@@ -38,16 +39,19 @@ def main(*args) -> int:
         type=str,
         help="interface to listen on",
     )
-    args = parser.parse_args(args=args)
 
-    # send application logs to stdout
+    return parser.parse_args(arguments)
+
+
+def main() -> int:
+    args = parse_arguments(sys.argv[1:])
+
     logging.basicConfig(
         format="[%(asctime)s] %(levelname)-8s - %(message)s",
         level=logging.DEBUG,
         stream=sys.stdout,
     )
 
-    # run only on localhost for testing
     load().run(
         host=args.bind,
         port=args.port,
@@ -59,4 +63,4 @@ def main(*args) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main(*sys.argv[1:]))
+    main()
