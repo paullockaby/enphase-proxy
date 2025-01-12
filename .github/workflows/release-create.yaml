@@ -40,6 +40,7 @@ jobs:
     # only run if the other jobs succeed
     needs:
       - tests
+      - security
 
     permissions:
       contents: write
@@ -55,7 +56,7 @@ jobs:
         uses: commitizen-tools/commitizen-action@0.23.1
         with:
           changelog: true
-          changelog_increment_filename: "CHANGELOG.md"
+          changelog_increment_filename: "changes.md"
           git_redirect_stderr: true
           increment: ${{ inputs.increment }}
           prerelease: ${{ inputs.prerelease }}
@@ -66,9 +67,9 @@ jobs:
           git push origin main --tags
 
       - name: Create release
-        uses: softprops/action-gh-release@v2.2.0
+        uses: softprops/action-gh-release@v2
         with:
-          body_path: "CHANGELOG.md"
+          body_path: "changes.md"
           tag_name: "v${{ steps.cz.outputs.version }}"
 
       - run: |

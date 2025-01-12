@@ -1,19 +1,22 @@
 [project]
 name = "enphase-proxy"
+version = "0.0.0"  # DO NOT CHANGE -- set during build
+description = "Connect to your Enphase Envoy locally and proxy the API."
+authors = [{name = "Paul Lockaby", email = "paul@paullockaby.com"}]
 readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.13 <3.14"
+dependencies = []
+
+[project.scripts]
+enphase-proxy = "enphase_proxy.__main__:main"
 
 [tool.poetry]
-name = "enphase-proxy"
-version = "0.0.0"  # DO NOT CHANGE -- set during build
-description = "Connect to your Enphase Envoy locally and proxy the API."
-authors = ["Paul Lockaby <paul@paullockaby.com>"]
 packages = [{include = "enphase_proxy", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.13 <3.14"
-quart = "^0.19.3"
+quart = "^0.20.0"
 tenacity = "^9.0.0"
 hypercorn = {extras = ["uvloop"], version = "^0.17.3"}
 httpx = "^0.28.0"
@@ -29,5 +32,5 @@ asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0"]
 build-backend = "poetry.core.masonry.api"
