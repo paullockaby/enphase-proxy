@@ -23,7 +23,7 @@ RUN apt-get -q update && apt-get install -y --no-install-recommends git
 
 # now become the app user to set up poetry and the versioning tool
 RUN pip3 install poetry>=2 dunamai --no-cache-dir && mkdir -p $APP_ROOT && chown 1000:1000 $APP_ROOT
-COPY --chown=1000:1000 pyproject.toml poetry.lock $APP_ROOT/
+COPY --chown=1000:1000 pyproject.toml poetry.lock LICENSE $APP_ROOT/
 
 # we have enough to install the application now
 USER app
