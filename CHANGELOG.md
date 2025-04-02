@@ -1,3 +1,18 @@
+## v1.7.1 (2025-04-02)
+
+### Fix
+
+- **deps**: bump jinja2 from 3.1.5 to 3.1.6
+- correcting the license configuration
+- attempting to fix dependabot
+- add deprecated fields to fix dependabot
+- **deps**: bump commitizen-tools/commitizen-action from 0.23.1 to 0.24.0
+- add license file to docker image
+- **deps**: bump quart from 0.19.9 to 0.20.0
+- **deps-dev**: bump pytest-asyncio from 0.24.0 to 0.25.0
+- **deps**: updating poetry version and cleaning up docker
+- updating build scripts, readme, python dependencies
+
 ## v1.7.0 (2024-12-15)
 
 ### Feat
