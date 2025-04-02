@@ -6,17 +6,19 @@ authors = [{name = "Paul Lockaby", email = "paul@paullockaby.com"}]
 readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.13 <3.14"
-dependencies = []
+dynamic = ["dependencies"]
 
 [project.scripts]
 enphase-proxy = "enphase_proxy.__main__:main"
 
 [tool.poetry]
+packages = [{include = "enphase_proxy", from = "src"}]
+
+# these are deprecated but necessary for dependabot
 name = "enphase-proxy"
 version = "0.0.0"  # DO NOT CHANGE -- set during build
 description = "Connect to your Enphase Envoy locally and proxy the API."
 authors = ["Paul Lockaby <paul@paullockaby.com>"]
-packages = [{include = "enphase_proxy", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.13 <3.14"
