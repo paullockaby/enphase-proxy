@@ -12,6 +12,10 @@ dependencies = []
 enphase-proxy = "enphase_proxy.__main__:main"
 
 [tool.poetry]
+name = "enphase-proxy"
+version = "0.0.0"  # DO NOT CHANGE -- set during build
+description = "Connect to your Enphase Envoy locally and proxy the API."
+authors = ["Paul Lockaby <paul@paullockaby.com>"]
 packages = [{include = "enphase_proxy", from = "src"}]
 
 [tool.poetry.dependencies]
