@@ -1,3 +1,10 @@
+## v1.7.2 (2025-04-26)
+
+### Fix
+
+- **deps**: updating python dependencies
+- **deps**: updating python to 3.13.3
+
 ## v1.7.1 (2025-04-02)
 
 ### Fix
