@@ -1,3 +1,13 @@
+## v1.7.3 (2025-06-08)
+
+### Fix
+
+- **deps-dev**: bump pytest-asyncio from 0.25.3 to 0.26.0
+- **deps**: bump flask from 3.1.0 to 3.1.1
+- **deps-dev**: bump pytest-mypy from 0.10.3 to 1.0.1
+- **deps**: updating python to 3.13.4
+- **deps**: bump aquasecurity/setup-trivy from 0.2.2 to 0.2.3
+
 ## v1.7.2 (2025-04-26)
 
 ### Fix
