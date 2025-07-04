@@ -1,3 +1,11 @@
+## v1.7.5 (2025-07-04)
+
+### Fix
+
+- **deps-dev**: bump pytest-cov from 6.1.1 to 6.2.1
+- **deps-dev**: bump pytest-asyncio from 0.26.0 to 1.0.0
+- **deps-dev**: bump pytest from 8.3.5 to 8.4.1
+
 ## v1.7.4 (2025-06-08)
 
 ### Fix
