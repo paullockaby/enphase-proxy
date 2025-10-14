@@ -1,3 +1,17 @@
+## v1.8.0 (2025-10-14)
+
+### Fix
+
+- **deps**: updating docker base image to trixie
+- **deps**: bump aquasecurity/setup-trivy from 0.2.3 to 0.2.4
+- **deps**: bump actions/setup-python from 5 to 6
+- **deps**: bump actions/checkout from 4 to 5
+- **deps-dev**: bump pytest-cov from 6.2.1 to 7.0.0
+- **deps**: bump h2 from 4.2.0 to 4.3.0
+- **deps-dev**: bump pytest-asyncio from 1.1.0 to 1.2.0
+- **deps-dev**: bump pytest from 8.4.1 to 8.4.2
+- **deps-dev**: bump pytest-asyncio from 1.0.0 to 1.1.0
+
 ## v1.7.5 (2025-07-04)
 
 ### Fix
