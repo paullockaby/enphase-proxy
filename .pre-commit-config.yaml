@@ -4,7 +4,7 @@ default_install_hook_types: [pre-commit, pre-push, commit-msg]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
         stages: [pre-commit]
@@ -49,23 +49,23 @@ repos:
         stages: [pre-commit]
 
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 24.10.0
+    rev: 25.11.0
     hooks:
       - id: black
-        language_version: python3.13
+        language_version: python3.14
         args: [--line-length=120]
         exclude: ^.*\b(migrations)\b.*$
         stages: [pre-commit]
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+    rev: 7.0.0
     hooks:
       - id: isort
         exclude: ^.*\b(migrations)\b.*$
         stages: [pre-commit]
 
   - repo: https://github.com/pycqa/flake8
-    rev: 7.1.1
+    rev: 7.3.0
     hooks:
       - id: flake8
         exclude: ^.*\b(migrations)\b.*$
@@ -96,13 +96,13 @@ repos:
           - pep8-naming
 
   - repo: https://github.com/python-poetry/poetry
-    rev: 2.0.1
+    rev: 2.2.1
     hooks:
       - id: poetry-check
         stages: [pre-commit]
 
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.1.0
+    rev: v4.10.0
     hooks:
       - id: commitizen
       - id: commitizen-branch
