@@ -1,3 +1,15 @@
+## v1.9.1 (2025-12-07)
+
+### Fix
+
+- updating dockerfile to python 3.14.1
+- updating python dependencies
+- **deps**: bump commitizen-tools/commitizen-action from 0.24.0 to 0.26.0
+- **deps**: bump hypercorn from 0.17.3 to 0.18.0
+- **deps**: bump actions/checkout from 5 to 6
+- **deps-dev**: bump pytest from 8.4.2 to 9.0.1
+- **deps**: bump werkzeug from 3.1.3 to 3.1.4
+
 ## v1.9.0 (2025-11-25)
 
 ### Feat
