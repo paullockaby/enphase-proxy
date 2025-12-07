@@ -313,28 +313,28 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "hypercorn"
-version = "0.17.3"
+version = "0.18.0"
 description = "A ASGI Server based on Hyper libraries and inspired by Gunicorn"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "hypercorn-0.17.3-py3-none-any.whl", hash = "sha256:059215dec34537f9d40a69258d323f56344805efb462959e727152b0aa504547"},
-    {file = "hypercorn-0.17.3.tar.gz", hash = "sha256:1b37802ee3ac52d2d85270700d565787ab16cf19e1462ccfa9f089ca17574165"},
+    {file = "hypercorn-0.18.0-py3-none-any.whl", hash = "sha256:225e268f2c1c2f28f6d8f6db8f40cb8c992963610c5725e13ccfcddccb24b1cd"},
+    {file = "hypercorn-0.18.0.tar.gz", hash = "sha256:d63267548939c46b0247dc8e5b45a9947590e35e64ee73a23c074aa3cf88e9da"},
 ]
 
 [package.dependencies]
 h11 = "*"
-h2 = ">=3.1.0"
+h2 = ">=4.3.0"
 priority = "*"
-uvloop = {version = ">=0.18", optional = true, markers = "platform_system != \"Windows\" and extra == \"uvloop\""}
+uvloop = {version = "*", optional = true, markers = "extra == \"uvloop\""}
 wsproto = ">=0.14.0"
 
 [package.extras]
 docs = ["pydata_sphinx_theme", "sphinxcontrib_mermaid"]
-h3 = ["aioquic (>=0.9.0,<1.0)"]
-trio = ["trio (>=0.22.0)"]
-uvloop = ["uvloop (>=0.18) ; platform_system != \"Windows\""]
+h3 = ["aioquic (>=0.9.0)"]
+trio = ["trio"]
+uvloop = ["uvloop"]
 
 [[package]]
 name = "hyperframe"
@@ -794,7 +794,6 @@ description = "Fast implementation of asyncio event loop on top of libuv"
 optional = false
 python-versions = ">=3.8.1"
 groups = ["main"]
-markers = "platform_system != \"Windows\""
 files = [
     {file = "uvloop-0.22.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:ef6f0d4cc8a9fa1f6a910230cd53545d9a14479311e87e3cb225495952eb672c"},
     {file = "uvloop-0.22.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:7cd375a12b71d33d46af85a3343b35d98e8116134ba404bd657b3b1d15988792"},
@@ -888,4 +887,4 @@ h11 = ">=0.16.0,<1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.14 <3.15"
-content-hash = "0264a982ee2a9ccd6fc0daa906c7e37e254dcf817f938773e1361f08c4bdac5c"
+content-hash = "7e52b63b16b95566a537e8fa2372343389c20058cd2e2e7e82137011d4fcdfe4"
