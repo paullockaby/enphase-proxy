@@ -1,3 +1,10 @@
+## v1.9.3 (2026-01-14)
+
+### Fix
+
+- **deps-dev**: bump filelock from 3.20.1 to 3.20.3
+- **deps**: bump werkzeug from 3.1.4 to 3.1.5
+
 ## v1.9.2 (2025-12-25)
 
 ### Fix
