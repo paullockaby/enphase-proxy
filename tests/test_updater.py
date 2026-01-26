@@ -69,7 +69,7 @@ async def test_fetch_credentials(mock_get: MagicMock, mock_post: MagicMock, cred
     jwt_data: dict = {
         "generation_time": datetime.now().timestamp(),
         "expires_at": (datetime.now() + timedelta(hours=1)).timestamp(),
-        "token": "new_token",
+        "token": "new_token",  # noqa: S105
     }
 
     mock_post.return_value.json = MagicMock(return_value={"session_id": session_id})

@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Setup trivy
-        uses: aquasecurity/setup-trivy@v0.2.4
+        uses: aquasecurity/setup-trivy@v0.2.5
         with:
           cache: true
           version: latest
