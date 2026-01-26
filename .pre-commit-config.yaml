@@ -49,7 +49,7 @@ repos:
         stages: [pre-commit]
 
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 25.11.0
+    rev: 26.1.0
     hooks:
       - id: black
         language_version: python3.14
@@ -96,13 +96,13 @@ repos:
           - pep8-naming
 
   - repo: https://github.com/python-poetry/poetry
-    rev: 2.2.1
+    rev: 2.3.1
     hooks:
       - id: poetry-check
         stages: [pre-commit]
 
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.10.0
+    rev: v4.11.2
     hooks:
       - id: commitizen
       - id: commitizen-branch
