@@ -96,13 +96,13 @@ repos:
           - pep8-naming
 
   - repo: https://github.com/python-poetry/poetry
-    rev: 2.3.1
+    rev: 2.3.2
     hooks:
       - id: poetry-check
         stages: [pre-commit]
 
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.11.2
+    rev: v4.13.7
     hooks:
       - id: commitizen
       - id: commitizen-branch
