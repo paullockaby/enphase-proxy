@@ -11,7 +11,7 @@ def credentials_manager() -> CredentialsManager:
     return CredentialsManager(  # noqa: S106
         url="https://example.com/",
         username="test_username",
-        password="test_password",
+        password="test_password",  # noqa: S106
         serialno="test_serialno",
         jwt="test_jwt",
     )
@@ -23,7 +23,7 @@ def test_credentials():
     manager.data = FetchedCredentials(  # noqa: S106
         fetched_at=datetime.now() - timedelta(hours=1),
         expires_at=datetime.now() + timedelta(hours=1),
-        token="old_token",
+        token="old_token",  # noqa: S106
     )
     return manager
 
@@ -55,7 +55,7 @@ async def test_credentials_fetch_new_credentials(
     mock_fetch_credentials.return_value = FetchedCredentials(  # noqa: S106
         fetched_at=datetime.now(),
         expires_at=datetime.now() + timedelta(hours=1),
-        token="new_token",
+        token="new_token",  # noqa: S106
     )
     assert await credentials_manager.credentials == "new_token"
     mock_fetch_credentials.assert_called_once()
@@ -96,14 +96,14 @@ async def test_credentials_expiry(mock_fetch_credentials: MagicMock):
     manager.data = FetchedCredentials(  # noqa: S106
         fetched_at=starting_timestamp - timedelta(hours=10),
         expires_at=starting_timestamp - timedelta(hours=1),
-        token="old_token",
+        token="old_token",  # noqa: S106
     )
 
     # new credential expires in one hour
     mock_fetch_credentials.return_value = FetchedCredentials(  # noqa: S106
         fetched_at=starting_timestamp,
         expires_at=starting_timestamp + timedelta(hours=1),
-        token="new_token",
+        token="new_token",  # noqa: S106
     )
 
     credentials = await manager.credentials
@@ -123,14 +123,14 @@ async def test_credentials_fetch(mock_fetch_credentials: MagicMock):
     manager.data = FetchedCredentials(  # noqa: S106
         fetched_at=starting_timestamp - timedelta(hours=10),
         expires_at=starting_timestamp + timedelta(hours=1),
-        token="old_token",
+        token="old_token",  # noqa: S106
     )
 
     # this is a new token but we're not going to end up with it
     mock_fetch_credentials.return_value = FetchedCredentials(  # noqa: S106
         fetched_at=starting_timestamp,
         expires_at=starting_timestamp + timedelta(hours=10),
-        token="new_token",
+        token="new_token",  # noqa: S106
     )
 
     credentials = await manager.credentials
