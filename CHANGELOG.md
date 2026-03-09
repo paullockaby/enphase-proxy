@@ -1,3 +1,10 @@
+## v1.9.6 (2026-03-09)
+
+### Fix
+
+- **deps**: bump commitizen-tools/commitizen-action from 0.27.0 to 0.27.1
+- updating versions, fixing tests
+
 ## v1.9.5 (2026-02-14)
 
 ## v1.9.4 (2026-01-26)
