@@ -1,3 +1,9 @@
+## v1.9.7 (2026-03-23)
+
+### Fix
+
+- update dependencies for security vulns
+
 ## v1.9.6 (2026-03-09)
 
 ### Fix
