@@ -1,3 +1,12 @@
+## v1.9.8 (2026-04-02)
+
+### Fix
+
+- **deps-dev**: bump pygments from 2.19.2 to 2.20.0
+- **deps**: bump docker/setup-qemu-action from 3 to 4
+- **deps**: bump docker/login-action from 3 to 4
+- **deps**: bump docker/setup-buildx-action from 3 to 4
+
 ## v1.9.7 (2026-03-23)
 
 ### Fix
