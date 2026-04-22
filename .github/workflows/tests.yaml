@@ -38,13 +38,13 @@ jobs:
       - name: Install poetry
         run: pipx install poetry
 
-      - name: Setup python
+      - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.14.x"
           cache: "poetry"
 
-      - name: Run python tests
+      - name: Run Python tests
         run: |
           poetry install --no-interaction
           poetry run pytest --cov=src --cov-report=term --cov-fail-under=50
