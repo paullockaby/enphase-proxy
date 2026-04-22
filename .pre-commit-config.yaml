@@ -96,7 +96,7 @@ repos:
           - pep8-naming
 
   - repo: https://github.com/python-poetry/poetry
-    rev: 2.3.2
+    rev: 2.3.4
     hooks:
       - id: poetry-check
         stages: [pre-commit]
