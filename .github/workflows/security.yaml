@@ -13,18 +13,17 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup trivy
-        uses: aquasecurity/setup-trivy@v0.2.6
-        with:
-          cache: true
-          version: latest
+      - name: Check out the code
+        uses: actions/checkout@v6
 
       - name: Run trivy configuration checks
         run: |
-          trivy config . --config=.trivy.yaml --ignorefile=.trivyignore
+          if [[ -f "/usr/local/bin/trivy" ]]; then
+            trivy config . --config=.trivy.yaml --ignorefile=.trivyignore
+          fi
 
       - name: Run trivy filesystem checks
         run: |
-          trivy filesystem . --config=.trivy.yaml --ignorefile=.trivyignore --no-progress
+          if [[ -f "/usr/local/bin/trivy" ]]; then
+            trivy filesystem . --config=.trivy.yaml --ignorefile=.trivyignore --no-progress
+          fi

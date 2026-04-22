@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> If you are viewing this repository in GitHub, know that GitHub is [a mirror of the original repository](https://code.lockaby.org/public/enphase-proxy).
+
 # enphase-proxy
 
 An application for proxying requests to a local Enphase Envoy system. This implements the new authentication mechanism that version D7.x.x enforces.
