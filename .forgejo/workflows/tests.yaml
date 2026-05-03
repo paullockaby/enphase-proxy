@@ -12,16 +12,16 @@ jobs:
 
     steps:
       - name: Check out the code
-        uses: actions/checkout@v6
+        uses: https://data.forgejo.org/actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: https://data.forgejo.org/actions/setup-python@v6
         with:
           python-version: "3.14.x"
           cache: "pip"
 
       - name: Run linter
-        uses: pre-commit/action@v3.0.1
+        uses: https://github.com/pre-commit/action@v3.0.1
         env:
           SKIP: no-commit-to-branch
 
@@ -33,13 +33,13 @@ jobs:
 
     steps:
       - name: Check out the code
-        uses: actions/checkout@v6
+        uses: https://data.forgejo.org/actions/checkout@v6
 
       - name: Install poetry
         run: pipx install poetry
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: https://data.forgejo.org/actions/setup-python@v6
         with:
           python-version: "3.14.x"
           cache: "poetry"
@@ -51,4 +51,4 @@ jobs:
 
       - name: Run container tests
         run: |
-          docker build .
+          make build
