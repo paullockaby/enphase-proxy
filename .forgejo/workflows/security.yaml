@@ -14,16 +14,12 @@ jobs:
 
     steps:
       - name: Check out the code
-        uses: actions/checkout@v6
+        uses: https://data.forgejo.org/actions/checkout@v6
 
       - name: Run trivy configuration checks
         run: |
-          if [[ -f "/usr/local/bin/trivy" ]]; then
-            trivy config . --config=.trivy.yaml --ignorefile=.trivyignore
-          fi
+          trivy config . --config=.trivy.yaml --ignorefile=.trivyignore
 
       - name: Run trivy filesystem checks
         run: |
-          if [[ -f "/usr/local/bin/trivy" ]]; then
-            trivy filesystem . --config=.trivy.yaml --ignorefile=.trivyignore --no-progress
-          fi
+          trivy filesystem . --config=.trivy.yaml --ignorefile=.trivyignore --no-progress

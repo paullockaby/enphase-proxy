@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write
       packages: write
 
     steps:
@@ -32,28 +31,6 @@ jobs:
 
       - name: Build, tag, and push docker image to the GitHub Container Registry
         run: make push
-
-      - name: Install poetry
-        run: pipx install poetry
-
-      - name: Setup python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.14.x"
-          cache: "poetry"
-
-      - name: Run python build
-        run: |
-          poetry version ${{ github.ref_name }}
-          poetry build --no-interaction
-
-      - name: Update release
-        uses: softprops/action-gh-release@v3
-        with:
-          files: |
-            dist/*
-            CHANGELOG.md
-          tag_name: "${{ github.ref_name }}"
 
       - run: |
           echo "Finished building and pushing containers for version ${{ github.ref_name }}."

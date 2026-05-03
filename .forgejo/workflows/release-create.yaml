@@ -27,11 +27,11 @@ on:
 
 jobs:
   tests:
-    uses: ./.github/workflows/tests.yaml
+    uses: ./.forgejo/workflows/tests.yaml
     secrets: inherit
 
   security:
-    uses: ./.github/workflows/security.yaml
+    uses: ./.forgejo/workflows/security.yaml
     secrets: inherit
 
   bump_version:
@@ -47,14 +47,13 @@ jobs:
 
     steps:
       - name: Check out the code
-        uses: actions/checkout@v6
+        uses: https://data.forgejo.org/actions/checkout@v6
         with:
-          fetch-depth: 0
           ssh-key: "${{ secrets.DEPLOY_KEY }}"
 
       - id: cz
         name: Create changelog and bump version
-        uses: commitizen-tools/commitizen-action@0.27.1
+        uses: https://github.com/commitizen-tools/commitizen-action@0.27.1
         with:
           changelog: true
           changelog_increment_filename: "changes.md"
@@ -68,7 +67,7 @@ jobs:
           git push origin main --tags
 
       - name: Create release
-        uses: softprops/action-gh-release@v3
+        uses: https://github.com/softprops/action-gh-release@v3
         with:
           body_path: "changes.md"
           tag_name: "v${{ steps.cz.outputs.version }}"

@@ -29,7 +29,7 @@ test: install
 .PHONY: build
 build:
 	@echo "building image for ${IMAGE_ID}"
-	docker build -t $(IMAGE_NAME):latest .
+	docker buildx build -t $(IMAGE_NAME):latest .
 
 .PHONY: buildx
 buildx:
