@@ -18,7 +18,6 @@ jobs:
         uses: https://data.forgejo.org/actions/setup-python@v6
         with:
           python-version: "3.14.x"
-          cache: "pip"
 
       - name: Run linter
         uses: https://github.com/pre-commit/action@v3.0.1
