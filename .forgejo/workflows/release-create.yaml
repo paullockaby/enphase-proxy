@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - name: Check out the code
-        uses: https://data.forgejo.org/actions/checkout@v6
+        uses: https://data.forgejo.org/actions/checkout@v7
         with:
           ssh-key: "${{ secrets.DEPLOY_KEY }}"
 
