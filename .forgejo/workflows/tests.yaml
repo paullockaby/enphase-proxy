@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Check out the code
-        uses: https://data.forgejo.org/actions/checkout@v6
+        uses: https://data.forgejo.org/actions/checkout@v7
 
       - name: Set up Python
         uses: https://data.forgejo.org/actions/setup-python@v6
@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Check out the code
-        uses: https://data.forgejo.org/actions/checkout@v6
+        uses: https://data.forgejo.org/actions/checkout@v7
 
       - name: Install poetry
         run: pipx install poetry
