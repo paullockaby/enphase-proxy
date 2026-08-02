@@ -51,16 +51,30 @@ jobs:
         with:
           ssh-key: "${{ secrets.DEPLOY_KEY }}"
 
-      - id: cz
-        name: Create changelog and bump version
-        uses: https://github.com/commitizen-tools/commitizen-action@0.27.1
+      - name: Set up python
+        uses: https://data.forgejo.org/actions/setup-python@v7
         with:
-          changelog: true
-          changelog_increment_filename: "changes.md"
-          git_redirect_stderr: true
-          increment: ${{ inputs.increment }}
-          prerelease: ${{ inputs.prerelease }}
-          push: false
+          python-version: "3.14.x"
+
+      - name: Create changelog and bump version
+        id: cz
+        run: |
+          pip install commitizen
+          git config --global user.name "forgejo-action"
+          git config --global user.email "noreply@lockaby.org"
+
+          BUMP_ARGS=""
+          if [ "${{ inputs.increment }}" != "" ]; then
+            BUMP_ARGS="$BUMP_ARGS --increment ${{ inputs.increment }}"
+          fi
+          if [ "${{ inputs.prerelease }}" != "" ]; then
+            BUMP_ARGS="$BUMP_ARGS --prerelease ${{ inputs.prerelease }}"
+          fi
+
+          cz bump $BUMP_ARGS
+
+          NEW_VERSION=$(git describe --tags --abbrev=0)
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
       - name: Push changelog updates
         run: |
@@ -70,7 +84,7 @@ jobs:
         uses: https://github.com/softprops/action-gh-release@v3
         with:
           body_path: "changes.md"
-          tag_name: "v${{ steps.cz.outputs.version }}"
+          tag_name: "${{ steps.cz.outputs.version }}"
 
       - run: |
-          echo "Bumped to version v${{ steps.cz.outputs.version }}"
+          echo "Bumped to version ${{ steps.cz.outputs.version }}"
