@@ -51,7 +51,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up python
+      - name: Set up Python
         uses: https://data.forgejo.org/actions/setup-python@v7
         with:
           python-version: "3.14.x"
@@ -77,10 +77,9 @@ jobs:
           echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
       - name: Push changelog updates
-        run: |
-          git push origin main --tags
+        run: git push origin main --tags
 
-      - name: Create release
+      - name: Create release documentation
         uses: https://github.com/softprops/action-gh-release@v3
         with:
           body_path: "changes.md"
