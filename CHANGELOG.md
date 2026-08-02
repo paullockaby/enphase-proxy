@@ -1,3 +1,16 @@
+## v1.10.0 (2026-08-02)
+
+### Fix
+
+- do not use non-existent key in build
+- **deps**: update dependency quart to ^0.21.0
+- updating to build containers on forgejo
+- do not cache python install in actions
+- convert to forgejo actions (broken)
+- language in workflows
+- move to gitea
+- **deps-dev**: bump pytest from 9.0.2 to 9.0.3
+
 ## v1.9.8 (2026-04-02)
 
 ### Fix
