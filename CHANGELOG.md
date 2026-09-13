@@ -1,3 +1,10 @@
+## v1.12.0 (2026-09-13)
+
+### Fix
+
+- **deps**: update dependency quart to ^0.23.0
+- **deps**: update dependency quart to ^0.22.0
+
 ## v1.11.0 (2026-08-06)
 
 ## v1.10.1 (2026-08-02)
