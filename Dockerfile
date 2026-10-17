@@ -1,4 +1,4 @@
-FROM python:3.14.7-slim-trixie@sha256:51dafde81dbdb6ebde285137a295cf18a47ca95234fe388a343719cb97305b3d AS base
+FROM python:3.15.0-slim-trixie@sha256:d802f03223b9e00604cd54574bcac1a4638914c43683d3f0afd6ebee35f25313 AS base
 
 # github metadata
 LABEL org.opencontainers.image.source=https://github.com/paullockaby/enphase-proxy
