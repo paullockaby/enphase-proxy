@@ -1,3 +1,9 @@
+## v1.13.0 (2026-10-25)
+
+### Fix
+
+- updating python version
+
 ## v1.12.0 (2026-09-13)
 
 ### Fix
