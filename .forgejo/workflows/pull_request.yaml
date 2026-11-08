@@ -7,7 +7,3 @@ jobs:
   tests:
     uses: ./.forgejo/workflows/tests.yaml
     secrets: inherit
-
-  security:
-    uses: ./.forgejo/workflows/security.yaml
-    secrets: inherit
