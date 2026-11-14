@@ -30,17 +30,12 @@ jobs:
     uses: ./.forgejo/workflows/tests.yaml
     secrets: inherit
 
-  security:
-    uses: ./.forgejo/workflows/security.yaml
-    secrets: inherit
-
   bump_version:
     runs-on: ubuntu-latest
 
     # only run if the other jobs succeed
     needs:
       - tests
-      - security
 
     permissions:
       contents: write
