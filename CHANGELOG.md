@@ -1,3 +1,11 @@
+## v1.13.1 (2026-11-26)
+
+### Fix
+
+- remove reference to security
+- update python container to 3.14.10
+- removing trivy
+
 ## v1.13.0 (2026-10-25)
 
 ### Fix
